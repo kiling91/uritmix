@@ -76,7 +76,7 @@ public class CreateLesson
                 Description = message.Create.Description?.Trim()
             };
 
-            var find = await _lessonRepository.Find(message.Create.Name);
+            var find = await _lessonRepository.Find(create.Name);
             if (find != null)
                 return ResultResponse<LessonView>.CreateError(_localizer["Lesson already exist"]);
 

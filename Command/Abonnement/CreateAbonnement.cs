@@ -90,7 +90,7 @@ public class CreateAbonnement
             if (!create.LessonIds.Any()) 
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement must be assigned lessens"]);
 
-            var find = await _abonnementRepository.Find(message.Create.Name);
+            var find = await _abonnementRepository.Find(create.Name);
             if (find != null)
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement already exist"]);
 

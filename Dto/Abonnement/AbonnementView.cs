@@ -1,7 +1,9 @@
+using System.ComponentModel;
 using Dto.Lesson;
 
 namespace Dto.Abonnement;
 
+[DisplayName("Abonnement")]
 public record AbonnementView
 {
     public long Id { get; init; }
