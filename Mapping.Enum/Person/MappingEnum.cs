@@ -1,67 +1,34 @@
 using Dto.Auth;
+using Dto.Person;
 using Model.Auth;
+using Model.Person;
 
 namespace Mapping.Enum.Person;
 
 public static class MappingEnumExtensions
 {
-    public static AuthRoleView ToView(this AuthRole role)
+    public static AuthRoleView ToView(this AuthRole value)
     {
-        switch (role)
-        {
-            case AuthRole.Manager:
-                return AuthRoleView.Manager;
-            case AuthRole.Admin:
-                return AuthRoleView.Admin;
-            case AuthRole.Server:
-                return AuthRoleView.Server;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(role), role, null);
-        }
+        return (AuthRoleView)value;
     }
 
-    public static AuthStatusView ToView(this AuthStatus status)
+    public static AuthStatusView ToView(this AuthStatus value)
     {
-        switch (status)
-        {
-            case AuthStatus.NotActivated:
-                return AuthStatusView.NotActivated;
-            case AuthStatus.Activated:
-                return AuthStatusView.Activated;
-            case AuthStatus.Blocked:
-                return AuthStatusView.Blocked;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(status), status, null);
-        }
+        return (AuthStatusView)value;
     }
 
-    public static AuthRole ToModel(this AuthRoleView role)
+    public static AuthRole ToModel(this AuthRoleView value)
     {
-        switch (role)
-        {
-            case AuthRoleView.Manager:
-                return AuthRole.Manager;
-            case AuthRoleView.Admin:
-                return AuthRole.Admin;
-            case AuthRoleView.Server:
-                return AuthRole.Server;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(role), role, null);
-        }
+        return (AuthRole)value;
     }
 
-    public static AuthStatus ToModel(this AuthStatusView status)
+    public static AuthStatus ToModel(this AuthStatusView value)
     {
-        switch (status)
-        {
-            case AuthStatusView.NotActivated:
-                return AuthStatus.NotActivated;
-            case AuthStatusView.Activated:
-                return AuthStatus.Activated;
-            case AuthStatusView.Blocked:
-                return AuthStatus.Blocked;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(status), status, null);
-        }
+        return (AuthStatus)value;
+    }
+    
+    public static PersonType ToModel(this PersonTypeView value)
+    {
+        return (PersonType)value;
     }
 }

@@ -14,14 +14,14 @@ namespace Command.Room;
 
 public class CreateRoom
 {
-    [DisplayName("CreateRoomPerson")]
+    [DisplayName("CreateRoom")]
     public record CreateRoomForm
     {
         public string Name { get; init; } = null!;
         public string? Description { get; init; }
     }
 
-    [DisplayName("CreateRoomPersonCommand")]
+    [DisplayName("CreateRoomCommand")]
     public record Command(CreateRoomForm Create) : IRequest<ResultResponse<RoomView>>;
 
     public class CommandValidator : AbstractValidator<Command>

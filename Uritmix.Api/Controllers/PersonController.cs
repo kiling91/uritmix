@@ -82,9 +82,10 @@ public class PersonController : ControllerBase
     [HttpGet]
     [AuthorizeByRole(AuthRole.Admin)]
     public Task<ResultResponse<PaginatedListViewModel<PersonView>>> GetPersons(
+        [FromQuery] PersonTypeView type,
         [FromQuery] Paginator query,
         CancellationToken ct)
     {
-        return _mediator.Send(new GetPersons.Query(query), ct);
+        return _mediator.Send(new GetPersons.Query(type, query), ct);
     }
 }
