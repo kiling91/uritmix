@@ -37,7 +37,7 @@ public class LessonRepository : RepositoryBase<DbServiceContext>, ILessonReposit
         return await GetEntity(
             e => e.Id == id,
             Dummy<LessonModel>,
-            context => context.Lessons);
+            context => context.Lessons.Include(l => l.Trainer));
     }
 
     public async Task<LessonModel?> Find(string name)
@@ -50,7 +50,7 @@ public class LessonRepository : RepositoryBase<DbServiceContext>, ILessonReposit
 
     public async Task<PaginatedList<LessonModel>> Items(Paginator paginator)
     {
-        var sessions = Context.Lessons
+        var sessions = Context.Lessons.Include(l => l.Trainer)
             .OrderBy(p => p.Name)
             .AsNoTracking();
         var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);

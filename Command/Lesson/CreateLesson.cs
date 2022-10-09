@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using AutoMapper;
+using DataAccess.Auth;
 using DataAccess.Lesson;
 using Dto.Lesson;
 using FluentValidation;
@@ -14,7 +15,7 @@ namespace Command.Lesson;
 
 public class CreateLesson
 {
-    [DisplayName("CreateLessonPerson")]
+    [DisplayName("CreateLesson")]
     public record CreateLessonForm
     {
         public string Name { get; init; } = null!;
@@ -37,8 +38,7 @@ public class CreateLesson
                     .NotNull()
                     .NotEmpty()
                     .Length(ModelSettings.RoomNameMinLength, ModelSettings.RoomNameMaxLength);
-
-
+                
                 RuleFor(x => x.Create.Description)
                     .Must(x => x == null || x.Length <= ModelSettings.DescriptionMaxLength);
 
@@ -58,14 +58,16 @@ public class CreateLesson
     public class Handler : IRequestHandler<Command, ResultResponse<LessonView>>
     {
         private readonly ILessonRepository _lessonRepository;
+        private readonly IPersonRepository _personRepository;
         private readonly IStringLocalizer<Handler> _localizer;
         private readonly IMapper _mapper;
 
-        public Handler(IMapper mapper, IStringLocalizer<Handler> localizer, ILessonRepository lessonRepository)
+        public Handler(IMapper mapper, IStringLocalizer<Handler> localizer, ILessonRepository lessonRepository, IPersonRepository personRepository)
         {
             _mapper = mapper;
             _localizer = localizer;
             _lessonRepository = lessonRepository;
+            _personRepository = personRepository;
         }
 
         public async Task<ResultResponse<LessonView>> Handle(Command message, CancellationToken ct)
@@ -76,10 +78,13 @@ public class CreateLesson
                 Description = message.Create.Description?.Trim()
             };
 
+            var person = await _personRepository.Get(create.TrainerId);
+            if (person == null || !person.IsTrainer)
+                return ResultResponse<LessonView>.CreateError(_localizer["Person not found or person is not trainer"]);
+
             var find = await _lessonRepository.Find(create.Name);
             if (find != null)
                 return ResultResponse<LessonView>.CreateError(_localizer["Lesson already exist"]);
-
 
             var result = await _lessonRepository.Create(new LessonModel
             {

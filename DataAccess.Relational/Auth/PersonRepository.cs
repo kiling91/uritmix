@@ -41,12 +41,18 @@ public class PersonRepository : RepositoryBase<DbServiceContext>, IPersonReposit
             (context, entity) => Task.CompletedTask);
     }
 
-    public async Task<PaginatedList<PersonModel>> Items(Paginator paginator)
+    public async Task<PaginatedList<PersonModel>> Items(PersonType type, Paginator paginator)
     {
         var sessions = Context.Persons
             .Include(p => p.Auth)
-            .OrderBy(p => p.Id)
-            .AsNoTracking();
+            .OrderBy(p => p.Id).AsQueryable();
+
+        if (type == PersonType.Trainer)
+            sessions = sessions.Where(p => p.IsTrainer);
+        else if (type == PersonType.Account)
+            sessions = sessions.Where(p => p.HaveAuth);
+
+        sessions = sessions.AsNoTracking();
         var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);
         return MapperObject.Map<PaginatedList<PersonEntity>, PaginatedList<PersonModel>>(page);
     }

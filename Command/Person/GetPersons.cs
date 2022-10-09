@@ -6,15 +6,15 @@ using FluentValidation;
 using Helpers.Core;
 using Helpers.Pagination;
 using Helpers.WebApi.Extensions;
+using Mapping.Enum.Person;
 using MediatR;
-using Microsoft.Extensions.Localization;
 
 namespace Command.Person;
 
 public class GetPersons
 {
     [DisplayName("GetPersonsQuery")]
-    public record Query(Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<PersonView>>>;
+    public record Query(PersonTypeView Type, Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<PersonView>>>;
 
     public class CommandValidator : AbstractValidator<Query>
     {
@@ -23,19 +23,19 @@ public class GetPersons
             RuleFor(x => x.Paginator).NotNull().DependentRules(() =>
             {
                 RuleFor(x => x.Paginator).PaginatorValidate();
+                RuleFor(x => x.Type)
+                    .NotNull();
             });
         }
     }
 
     public class Handler : IRequestHandler<Query, ResultResponse<PaginatedListViewModel<PersonView>>>
     {
-        private readonly IStringLocalizer<Handler> _localizer;
         private readonly IMapper _mapper;
         private readonly IPersonRepository _personRepository;
 
-        public Handler(IStringLocalizer<Handler> localizer, IPersonRepository personRepository, IMapper mapper)
+        public Handler(IPersonRepository personRepository, IMapper mapper)
         {
-            _localizer = localizer;
             _personRepository = personRepository;
             _mapper = mapper;
         }
@@ -43,7 +43,7 @@ public class GetPersons
         public async Task<ResultResponse<PaginatedListViewModel<PersonView>>> Handle(Query request,
             CancellationToken ct)
         {
-            var items = await _personRepository.Items(request.Paginator);
+            var items = await _personRepository.Items(request.Type.ToModel(), request.Paginator);
             var result = _mapper.Map<PaginatedListViewModel<PersonView>>(items);
             return new ResultResponse<PaginatedListViewModel<PersonView>>(result);
         }

@@ -10,7 +10,7 @@ public interface IPersonRepository
     Task<PersonModel> Create(PersonModel model);
     Task<PersonModel?> Get(long id);
     Task<UpdatedModel<PersonModel>> Update(long id, Func<PersonModel, Task<PersonModel>> updateFunc);
-    Task<PaginatedList<PersonModel>> Items(Paginator paginator);
+    Task<PaginatedList<PersonModel>> Items(PersonType type, Paginator paginator);
     Task<PersonModel?> Find(string email);
     Task<long> RoleCount(AuthRole role);
 }
