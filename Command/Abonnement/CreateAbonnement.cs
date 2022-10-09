@@ -57,6 +57,9 @@ public class CreateAbonnement
                     .NotNull()
                     .GreaterThanOrEqualTo(ModelSettings.AbonnementBasePriceMin)
                     .LessThanOrEqualTo(ModelSettings.AbonnementBasePriceMax);
+                
+                RuleFor(x => x.Create.LessonIds)
+                    .NotNull();
             });
         }
     }
@@ -83,6 +86,9 @@ public class CreateAbonnement
             {
                 Name = message.Create.Name.FirstLetterToUpper()
             };
+
+            if (!create.LessonIds.Any()) 
+                return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement must be assigned lessens"]);
 
             var find = await _abonnementRepository.Find(message.Create.Name);
             if (find != null)
