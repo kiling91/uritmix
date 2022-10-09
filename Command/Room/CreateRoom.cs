@@ -63,7 +63,7 @@ public class CreateRoom
                 Description = message.Create.Description?.Trim()
             };
 
-            var find = await _roomRepository.Find(message.Create.Name);
+            var find = await _roomRepository.Find(create.Name);
             if (find != null)
                 return ResultResponse<RoomView>.CreateError(_localizer["Room already exist"]);
 

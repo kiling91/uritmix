@@ -1,7 +1,9 @@
+using System.ComponentModel;
 using Dto.Lesson;
 
 namespace Dto.Abonnement;
 
+[DisplayName("SoldAbonnement")]
 public class SoldAbonnementView
 {
     public long Id { get; init; }

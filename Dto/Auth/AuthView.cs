@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Dto.Auth;
 
-[DisplayName("AuthView")]
+[DisplayName("Auth")]
 public record AuthView
 {
     public AuthRoleView Role { get; init; }

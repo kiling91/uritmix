@@ -1,7 +1,9 @@
+using System.ComponentModel;
 using Dto.Person;
 
 namespace Dto.Lesson;
 
+[DisplayName("Lesson")]
 public record LessonView
 {
     public long Id { get; init; }
