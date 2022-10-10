@@ -101,6 +101,10 @@ public class CreateAbonnement
                 var lesson = await _lessonRepository.Get(lessonId);
                 if (lesson == null)
                     return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);
+                lesson = lesson with
+                {
+                    Trainer = null
+                };
                 lessons.Add(lesson);
             }
 

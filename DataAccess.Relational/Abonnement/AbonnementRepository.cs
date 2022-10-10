@@ -38,7 +38,7 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
         return await GetEntity(
             e => e.Id == id,
             Dummy<AbonnementModel>,
-            context => context.Abonnements);
+            context => context.Abonnements.Include(a => a.Lessons));
     }
 
     public async Task<AbonnementModel?> Find(string name)
@@ -52,6 +52,7 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
     public async Task<PaginatedList<AbonnementModel>> Items(Paginator paginator)
     {
         var sessions = Context.Abonnements
+            .Include(a => a.Lessons)
             .OrderBy(p => p.Name)
             .AsNoTracking();
         var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);
