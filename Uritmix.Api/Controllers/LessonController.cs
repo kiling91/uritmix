@@ -49,6 +49,19 @@ public class LessonController : ControllerBase
     {
         return _mediator.Send(new EditLesson.Command(lessonId, model), ct);
     }
+    
+    /// <summary>
+    ///     Возвращает занятие по id
+    /// </summary>
+    [HttpGet("{lessonId}")]
+    [AuthorizeByRole(AuthRole.Admin)]
+    public Task<ResultResponse<LessonView>> GetPerson(
+        long lessonId,
+        CancellationToken ct)
+    {
+        return _mediator.Send(new GetLesson.Query(lessonId), ct);
+    }
+
 
     /// <summary>
     ///     Возвращает список занятий
