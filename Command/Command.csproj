@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DataAccess\DataAccess.csproj"/>
-        <ProjectReference Include="..\Dto\Dto.csproj"/>
-        <ProjectReference Include="..\Helpers\Helpers.Core\Helpers.Core.csproj"/>
-        <ProjectReference Include="..\Helpers\Helpers.Mapping\Helpers.Mapping.csproj"/>
-        <ProjectReference Include="..\Helpers\Helpers.Pagination\Helpers.Pagination.csproj"/>
-        <ProjectReference Include="..\Helpers\Helpers.WebApi\Helpers.WebApi.csproj"/>
-        <ProjectReference Include="..\Mapping\Mapping.csproj"/>
-        <ProjectReference Include="..\Service\Service.csproj"/>
+        <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+        <ProjectReference Include="..\Dto\Dto.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.Core\Helpers.Core.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.Mapping\Helpers.Mapping.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.Pagination\Helpers.Pagination.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.WebApi\Helpers.WebApi.csproj" />
+        <ProjectReference Include="..\Mapping\Mapping.csproj" />
+        <ProjectReference Include="..\Service\Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Apis.Auth" Version="1.57.0"/>
+        <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
     </ItemGroup>
 
 </Project>

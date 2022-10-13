@@ -1,10 +1,7 @@
 using System.ComponentModel;
-using AutoMapper;
 using DataAccess.Auth;
-using Dto.Auth;
 using FluentValidation;
 using Helpers.Core;
-using Mapping.Enum.Person;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Model.Auth;
@@ -12,16 +9,16 @@ using Service.Security.UserJwt;
 
 namespace Command.Auth;
 
-public class Refresh
+public class Logout
 {
-    [DisplayName("Refresh")]
-    public record RefreshForm
+    [DisplayName("Logout")]
+    public record LogoutForm
     {
         public string Token { get; init; } = null!;
     }
 
-    [DisplayName("RefreshCommand")]
-    public record Command(RefreshForm Refresh) : IRequest<ResultResponse<LoggedPersonView>>;
+    [DisplayName("LogoutCommand")]
+    public record Command(LogoutForm Refresh) : IRequest<ResultResponse<Unit>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -34,7 +31,7 @@ public class Refresh
         }
     }
 
-    public class Handler : IRequestHandler<Command, ResultResponse<LoggedPersonView>>
+    public class Handler : IRequestHandler<Command, ResultResponse<Unit>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IStringLocalizer<Handler> _localizer;
@@ -48,40 +45,25 @@ public class Refresh
             _localizer = localizer;
         }
 
-        public async Task<ResultResponse<LoggedPersonView>> Handle(Command message, CancellationToken ct)
+        public async Task<ResultResponse<Unit>> Handle(Command message, CancellationToken ct)
         {
             var res = _jwtTokenGenerator.ResolveRefreshToken(message.Refresh.Token);
             if (res.Type != RefreshTokenValidateType.Valid)
-                return ResultResponse<LoggedPersonView>.CreateError(_localizer["Refresh token not valid"]);
+                return ResultResponse<Unit>.CreateError(_localizer["Refresh token not valid"]);
 
             var token = await _refreshTokenRepository.Get(res.TokenId);
             if (token == null || token.Person.Auth == null)
-                return ResultResponse<LoggedPersonView>.CreateError(_localizer["Refresh token not valid"]);
+                return ResultResponse<Unit>.CreateError(_localizer["Refresh token not valid"]);
             if (token.IsRevoked)
-                return ResultResponse<LoggedPersonView>.CreateError(_localizer["Refresh token has been revoked"]);
-
-            var auth = token.Person.Auth;
-            if (auth.Status == AuthStatus.Blocked)
-                return ResultResponse<LoggedPersonView>.CreateError(_localizer["User is blocked"]);
+                return ResultResponse<Unit>.CreateError(_localizer["Refresh token has been revoked"]);
 
             await _refreshTokenRepository.CreateOrUpdate(new RefreshTokenModel
             {
                 PersonId = token.PersonId,
                 IsRevoked = false
             });
-
-            var result = new LoggedPersonView
-            {
-                FirstName = token.Person.FirstName,
-                LastName = token.Person.LastName,
-                Role = token.Person.Auth.Role.ToView(),
-                Email = token.Person.Auth.Email,
-                AccessToken = _jwtTokenGenerator.CreateAccessToken(token.Person.Id, token.Person.Auth.Email,
-                    token.Person.Auth.Role),
-                RefreshToken = _jwtTokenGenerator.CreateRefreshToken(token.Person.Auth.Email, token.Id)
-            };
-
-            return new ResultResponse<LoggedPersonView>(result);
+            
+            return new ResultResponse<Unit>(Unit.Value);
         }
     }
 }
