@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.Auth;
 using DataAccess.Relational.Auth.Entities;
-using Helpers.DataAccess.Exceptions;
 using Helpers.DataAccess.Relational;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,39 +10,37 @@ namespace DataAccess.Relational.Auth;
 
 public class ConfirmationCoderRepository : RepositoryBase<DbServiceContext>, IConfirmationCoderRepository
 {
-    public ConfirmationCoderRepository(DbServiceContext context, IMapper mapperObject,
+    public ConfirmationCoderRepository(DbServiceContext context, IMapper map,
         ILogger<ConfirmationCoderRepository> logger)
-        : base(context, mapperObject, logger)
+        : base(context, map, logger)
     {
     }
 
     public Task<ConfirmationCodeModel> Create(ConfirmationCodeModel model)
     {
-        return CreateEntity(model, context => context.ConfirmationCodes);
+        return CreateEntity(model, c => c.ConfirmationCodes);
     }
 
     public async Task Remove(string token)
     {
-        await DeleteEntity(
-            e => e.Token == token, Dummy<ConfirmationCodeModel>,
+         await DeleteEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
+            e => e.Token == token,
             context => context.ConfirmationCodes);
     }
 
     public async Task Remove(long personId, ConfirmTokenType type)
     {
-        await DeleteEntity(
+        await DeleteEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
             e => e.PersonId == personId && e.Type == (byte)type,
-            Dummy<ConfirmationCodeModel>,
-            context => context.ConfirmationCodes,
-            false);
+            context => context.ConfirmationCodes);
     }
 
-    public async Task<ConfirmationCodeModel?> Find(string token)
+    public Task<ConfirmationCodeModel?> Find(string token)
     {
-        return await GetEntity(e => e.Token == token, Dummy<ConfirmationCodeModel>,
+        return GetEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
+            e => e.Token == token,
             c => c.ConfirmationCodes
                 .Include(code => code.Person)
-                .ThenInclude(p => p.Auth)
-        );
+                .ThenInclude(p => p.Auth));
     }
 }

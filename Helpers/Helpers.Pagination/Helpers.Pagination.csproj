@@ -4,12 +4,12 @@
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     </PropertyGroup>
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Helpers.Core\Helpers.Core.csproj"/>
+        <ProjectReference Include="..\Helpers.Core\Helpers.Core.csproj" />
     </ItemGroup>
 </Project>

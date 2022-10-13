@@ -11,8 +11,11 @@ public class Program
 
     public static IWebHost BuildWebHost(string[] args)
     {
-        return WebHost.CreateDefaultBuilder(args)
-            .UseStartup(typeof(Program).Assembly.FullName)
-            .Build();
+        var startupAssemblyName = typeof(Program).Assembly.FullName;
+        if (startupAssemblyName != null)
+            return WebHost.CreateDefaultBuilder(args)
+                .UseStartup(startupAssemblyName)
+                .Build();
+        throw new ArgumentNullException(nameof(startupAssemblyName));
     }
 }
