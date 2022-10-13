@@ -2,59 +2,43 @@ using AutoMapper;
 using DataAccess.Abonnement;
 using DataAccess.Relational.Abonnement.Entities;
 using Helpers.DataAccess;
+using Helpers.DataAccess.Relational;
 using Helpers.Pagination;
+using Microsoft.Extensions.Logging;
 using Model.Abonnement;
 
 namespace DataAccess.Relational.Abonnement;
 
-public class SoldAbonnementRepository: ISoldAbonnementRepository
+public class SoldAbonnementRepository: RepositoryBase<DbServiceContext>,  ISoldAbonnementRepository
 {
-    private readonly DbServiceContext _context;
-    private readonly IMapper _map;
-
-    public SoldAbonnementRepository(DbServiceContext context, IMapper map)
+    public SoldAbonnementRepository(DbServiceContext context, IMapper map, ILogger<SoldAbonnementRepository> logger)
+        : base(context, map, logger)
     {
-        _context = context;
-        _map = map;
     }
 
     public Task<SoldAbonnementModel> Create(SoldAbonnementModel model)
     {
-        //return CreateEntity(model, context => context.SoldAbonnements);
-        throw new NotImplementedException();
-
+        return CreateEntity(model, c => c.SoldAbonnements);
     }
 
-    public Task<UpdatedModel<SoldAbonnementModel>> Update(long id, Func<SoldAbonnementModel, Task<SoldAbonnementModel>> updateFunc)
+    public Task<UpdatedModel<SoldAbonnementModel>> Update(long id, 
+        Func<SoldAbonnementModel, Task<SoldAbonnementModel>> updateFunc)
     {
-        throw new NotImplementedException();
-
-        /*return await UpdateEntity(
-            e => e.Id == id,
-            context => context.SoldAbonnements,
-            updateFunc,
-            (_, _) => Task.CompletedTask);*/
+        return UpdateEntity(e => e.Id == id, c => c.SoldAbonnements, updateFunc);
     }
 
     public Task<SoldAbonnementModel?> Get(long id)
     {
-        throw new NotImplementedException();
-
-        /*return await GetEntity(
+        return GetEntity<SoldAbonnementModel, SoldAbonnementEntity>(
             e => e.Id == id,
-            Dummy<SoldAbonnementModel>,
-            context => context.SoldAbonnements);*/
+            c => c.SoldAbonnements);
     }
 
     public Task<PaginatedList<SoldAbonnementModel>> Items(long personId, Paginator paginator)
     {
-        throw new NotImplementedException();
-
-        /*var sessions = Context.SoldAbonnements
+        var query = Context.SoldAbonnements
             .OrderByDescending(p => p.DateSale)
-            .Where(p => p.PersonId == personId)
-            .AsNoTracking();
-        var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);
-        return MapperObject.Map<PaginatedList<SoldAbonnementEntity>, PaginatedList<SoldAbonnementModel>>(page);*/
+            .Where(p => p.PersonId == personId);
+        return PaginatedEntity<SoldAbonnementModel, SoldAbonnementEntity>(paginator, query);
     }
 }
