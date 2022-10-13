@@ -37,7 +37,7 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
     public Task<AbonnementModel?> Find(string name)
     {
         return GetEntity<AbonnementModel, AbonnementEntity>(
-            e => e.Name == name, 
+            e => e.Name == name,
             c => c.Abonnements.Include(l => l.Lessons));
     }
 

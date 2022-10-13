@@ -87,7 +87,7 @@ public sealed class DbServiceContext : DbContext
                     .HasOne<AbonnementEntity>()
                     .WithMany()
                     .HasForeignKey(pt => pt.AbonnementId));
-        
+
         builder.Entity<SoldAbonnementEntity>()
             .HasMany(b => b.Lessons)
             .WithMany(b => b.SoldAbonnements)

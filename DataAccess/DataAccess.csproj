@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Helpers\Helpers.DataAccess\Helpers.DataAccess.csproj" />
-        <ProjectReference Include="..\Helpers\Helpers.Pagination\Helpers.Pagination.csproj" />
-        <ProjectReference Include="..\Model\Model.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.DataAccess\Helpers.DataAccess.csproj"/>
+        <ProjectReference Include="..\Helpers\Helpers.Pagination\Helpers.Pagination.csproj"/>
+        <ProjectReference Include="..\Model\Model.csproj"/>
     </ItemGroup>
 
 </Project>

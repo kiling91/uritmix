@@ -32,6 +32,5 @@ public class MappingEntryToModel : CustomProfile
             .ReverseMapExtended(this)
             .Map(m => m.DateCreate, m => DateTime.FromFileTimeUtc(m.DateCreate))
             .Map(m => m.Type, m => (ConfirmTokenType)m.Type);
-
     }
 }

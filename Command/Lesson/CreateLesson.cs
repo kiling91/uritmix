@@ -38,7 +38,7 @@ public class CreateLesson
                     .NotNull()
                     .NotEmpty()
                     .Length(ModelSettings.RoomNameMinLength, ModelSettings.RoomNameMaxLength);
-                
+
                 RuleFor(x => x.Create.Description)
                     .Must(x => x == null || x.Length <= ModelSettings.DescriptionMaxLength);
 
@@ -58,11 +58,12 @@ public class CreateLesson
     public class Handler : IRequestHandler<Command, ResultResponse<LessonView>>
     {
         private readonly ILessonRepository _lessonRepository;
-        private readonly IPersonRepository _personRepository;
         private readonly IStringLocalizer<Handler> _localizer;
         private readonly IMapper _mapper;
+        private readonly IPersonRepository _personRepository;
 
-        public Handler(IMapper mapper, IStringLocalizer<Handler> localizer, ILessonRepository lessonRepository, IPersonRepository personRepository)
+        public Handler(IMapper mapper, IStringLocalizer<Handler> localizer, ILessonRepository lessonRepository,
+            IPersonRepository personRepository)
         {
             _mapper = mapper;
             _localizer = localizer;

@@ -72,7 +72,7 @@ public class PasswordReset
             var code = await _codeRepository.Find(message.PasswordReset.ConfirmCode);
             if (code == null)
                 return ResultResponse<Unit>.CreateError(_localizer["Confirm code not valid"]);
-            
+
             var person = code.Person;
             if (person.Auth == null)
                 return ResultResponse<Unit>.CreateError(_localizer["Confirm code not valid"]);
@@ -80,8 +80,9 @@ public class PasswordReset
                 return ResultResponse<Unit>.CreateError(_localizer["Person is blocked"]);
             if (person.Auth.Status != AuthStatus.Activated)
                 return ResultResponse<Unit>.CreateError(_localizer["Person has not activated account"]);
-            
+
             // TODO: One transaction
+
             #region One transaction
 
             var salt = Guid.NewGuid().ToByteArray();

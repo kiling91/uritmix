@@ -14,7 +14,7 @@ public class MappingEntryToModel : CustomProfile
             .ReverseMapExtended(this)
             .Map(m => m.Validity, m => (AbonnementValidity)m.Validity)
             .Map(m => m.Discount, m => (Discount)m.Discount);
-        
+
         CreateMap<SoldAbonnementModel, SoldAbonnementEntity>()
             .Map(m => m.Validity, m => (byte)m.Validity)
             .Map(m => m.Discount, m => (byte)m.Discount)

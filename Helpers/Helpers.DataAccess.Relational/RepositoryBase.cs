@@ -7,22 +7,21 @@ using Helpers.DataAccess.Exceptions;
 using Helpers.Pagination;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 
 namespace Helpers.DataAccess.Relational;
 
 public class RepositoryBase<TContext> where TContext : DbContext
 {
-    protected TContext Context { get; }
-    protected IMapper Map { get; }
-    protected ILogger<RepositoryBase<TContext>> Logger { get; }
-
     public RepositoryBase(TContext context, IMapper map, ILogger<RepositoryBase<TContext>> logger)
     {
         Context = context;
         Map = map;
         Logger = logger;
     }
+
+    protected TContext Context { get; }
+    protected IMapper Map { get; }
+    protected ILogger<RepositoryBase<TContext>> Logger { get; }
 
     protected async Task<TModel> CreateEntity<TModel, TEntity>(TModel model,
         Func<TContext, DbSet<TEntity>> dbSetAccessor) where TEntity : class
@@ -39,9 +38,9 @@ public class RepositoryBase<TContext> where TContext : DbContext
         var entity = await dbSetAccessor(Context).AsNoTracking().FirstOrDefaultAsync(entitySelector);
         return Map.Map<TModel?>(entity);
     }
-    
+
     protected async Task<TModel> CreateOrUpdateEntity<TModel, TEntity>(TModel model,
-        Func<TContext, DbSet<TEntity>> dbSetAccessor, 
+        Func<TContext, DbSet<TEntity>> dbSetAccessor,
         Expression<Func<TEntity, bool>> entitySelector)
         where TEntity : class
     {
@@ -94,10 +93,10 @@ public class RepositoryBase<TContext> where TContext : DbContext
 
         dbSetAccessor(Context).Remove(entity!);
         await Context.SaveChangesAsync();
-        
+
         return model;
     }
-    
+
     protected Task<PaginatedList<TModel>> PaginatedEntity<TModel, TEntity>(
         Paginator paginator,
         Expression<Func<TEntity, bool>> entitySelector,
@@ -107,7 +106,7 @@ public class RepositoryBase<TContext> where TContext : DbContext
         var query = dbSetAccessor(Context).Where(entitySelector);
         return PaginatedEntity<TModel, TEntity>(paginator, query);
     }
-    
+
     protected async Task<PaginatedList<TModel>> PaginatedEntity<TModel, TEntity>(
         Paginator paginator,
         IQueryable<TEntity> query

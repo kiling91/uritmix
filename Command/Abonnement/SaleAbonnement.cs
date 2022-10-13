@@ -40,14 +40,14 @@ public class SaleAbonnement
     public class Handler : IRequestHandler<Command, ResultResponse<SoldAbonnementView>>
     {
         private readonly IAbonnementRepository _abonnementRepository;
-        private readonly IPersonRepository _personRepository;
-        private readonly ISoldAbonnementRepository _soldAbonnementRepository;
         private readonly IStringLocalizer<Handler> _localizer;
         private readonly IMapper _mapper;
+        private readonly IPersonRepository _personRepository;
+        private readonly ISoldAbonnementRepository _soldAbonnementRepository;
 
         public Handler(IMapper mapper, IStringLocalizer<Handler> localizer,
-            IAbonnementRepository abonnementRepository, 
-            IPersonRepository personRepository, 
+            IAbonnementRepository abonnementRepository,
+            IPersonRepository personRepository,
             ISoldAbonnementRepository soldAbonnementRepository)
         {
             _mapper = mapper;
@@ -55,6 +55,44 @@ public class SaleAbonnement
             _abonnementRepository = abonnementRepository;
             _personRepository = personRepository;
             _soldAbonnementRepository = soldAbonnementRepository;
+        }
+
+        public async Task<ResultResponse<SoldAbonnementView>> Handle(Command message, CancellationToken ct)
+        {
+            var create = message.Create;
+
+            var abonnement = await _abonnementRepository.Get(message.Create.AbonnementId);
+            if (abonnement == null)
+                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Abonnement not found"]);
+
+            if (create.Discount > abonnement.Discount.ToView())
+                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Discount greater than max discount"]);
+
+            var person = await _personRepository.Get(message.Create.PersonId);
+            if (person == null)
+                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Person not found"]);
+
+            var dateSale = DateTime.Now;
+            var dateExpiration = DateTime.Now;
+            var priceSold = abonnement.BasePrice * (1.0f - GetDiscountValue(create.Discount));
+
+            var result = await _soldAbonnementRepository.Create(new SoldAbonnementModel
+            {
+                PersonId = create.PersonId,
+                Active = true,
+                DateSale = dateSale,
+                DateExpiration = dateExpiration,
+                PriceSold = priceSold,
+                VisitCounter = 0,
+                Name = abonnement.Name,
+                Validity = abonnement.Validity,
+                NumberOfVisits = abonnement.NumberOfVisits,
+                BasePrice = abonnement.BasePrice,
+                Discount = abonnement.Discount,
+                Lessons = abonnement.Lessons
+            });
+
+            return new ResultResponse<SoldAbonnementView>(_mapper.Map<SoldAbonnementView>(result));
         }
 
         private static float GetDiscountValue(DiscountView discount)
@@ -90,44 +128,6 @@ public class SaleAbonnement
                 default:
                     throw new ArgumentOutOfRangeException(nameof(discount), discount, null);
             }
-        }
-        
-        public async Task<ResultResponse<SoldAbonnementView>> Handle(Command message, CancellationToken ct)
-        {
-            var create = message.Create;
-
-            var abonnement = await _abonnementRepository.Get(message.Create.AbonnementId);
-            if (abonnement == null)
-                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Abonnement not found"]);
-
-            if (create.Discount > abonnement.Discount.ToView())
-                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Discount greater than max discount"]);
-            
-            var person = await _personRepository.Get(message.Create.PersonId);
-            if (person == null)
-                return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Person not found"]);
-
-            var dateSale = DateTime.Now;
-            var dateExpiration = DateTime.Now;
-            var priceSold = abonnement.BasePrice * (1.0f - GetDiscountValue(create.Discount));
-            
-            var result = await _soldAbonnementRepository.Create(new SoldAbonnementModel
-            {
-                PersonId = create.PersonId,
-                Active = true,
-                DateSale = dateSale,
-                DateExpiration = dateExpiration,
-                PriceSold = priceSold,
-                VisitCounter = 0,
-                Name = abonnement.Name,
-                Validity = abonnement.Validity,
-                NumberOfVisits = abonnement.NumberOfVisits,
-                BasePrice = abonnement.BasePrice,
-                Discount = abonnement.Discount,
-                Lessons = abonnement.Lessons,
-            });
-
-            return new ResultResponse<SoldAbonnementView>(_mapper.Map<SoldAbonnementView>(result));
         }
     }
 }

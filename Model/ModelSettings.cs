@@ -17,7 +17,9 @@ public static class ModelSettings
     public const float LessonDBasePriceMax = 100000.0f;
 
     public const byte AbonnementNumberOfVisitsMin = 1;
+
     public const byte AbonnementNumberOfVisitsMax = 100;
+
     //public const byte AbonnementDaysOfFreezingMin = 0;
     //public const byte AbonnementDaysOfFreezingMax = 10;
     public const float AbonnementBasePriceMin = 1.0f;

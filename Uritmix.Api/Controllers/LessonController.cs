@@ -49,7 +49,7 @@ public class LessonController : ControllerBase
     {
         return _mediator.Send(new EditLesson.Command(lessonId, model), ct);
     }
-    
+
     /// <summary>
     ///     Возвращает занятие по id
     /// </summary>

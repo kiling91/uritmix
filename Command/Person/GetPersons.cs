@@ -14,7 +14,8 @@ namespace Command.Person;
 public class GetPersons
 {
     [DisplayName("GetPersonsQuery")]
-    public record Query(PersonTypeView Type, Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<PersonView>>>;
+    public record Query
+        (PersonTypeView Type, Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<PersonView>>>;
 
     public class CommandValidator : AbstractValidator<Query>
     {

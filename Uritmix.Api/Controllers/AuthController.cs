@@ -73,7 +73,7 @@ public class AuthController : Controller
     {
         return _mediator.Send(new ActivateAuth.Command(model), ct);
     }
-    
+
     /// <summary>
     ///     Создание аккаунта для пользователя
     /// </summary>

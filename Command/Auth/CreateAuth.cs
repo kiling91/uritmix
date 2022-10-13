@@ -91,7 +91,7 @@ public class CreateAuth
                 PersonId = find.Id,
                 Token = Guid.NewGuid().ToString(),
                 Type = ConfirmTokenType.ActivatePerson,
-                DateCreate = DateTime.Now,
+                DateCreate = DateTime.Now
             });
 
             // Отправка кода подтверждения пользователя

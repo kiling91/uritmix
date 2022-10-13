@@ -9,7 +9,7 @@ using Model.Abonnement;
 
 namespace DataAccess.Relational.Abonnement;
 
-public class SoldAbonnementRepository: RepositoryBase<DbServiceContext>,  ISoldAbonnementRepository
+public class SoldAbonnementRepository : RepositoryBase<DbServiceContext>, ISoldAbonnementRepository
 {
     public SoldAbonnementRepository(DbServiceContext context, IMapper map, ILogger<SoldAbonnementRepository> logger)
         : base(context, map, logger)
@@ -21,7 +21,7 @@ public class SoldAbonnementRepository: RepositoryBase<DbServiceContext>,  ISoldA
         return CreateEntity(model, c => c.SoldAbonnements);
     }
 
-    public Task<UpdatedModel<SoldAbonnementModel>> Update(long id, 
+    public Task<UpdatedModel<SoldAbonnementModel>> Update(long id,
         Func<SoldAbonnementModel, Task<SoldAbonnementModel>> updateFunc)
     {
         return UpdateEntity(e => e.Id == id, c => c.SoldAbonnements, updateFunc);

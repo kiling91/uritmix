@@ -26,7 +26,7 @@ public static class MappingEnumExtensions
     {
         return (AuthStatus)value;
     }
-    
+
     public static PersonType ToModel(this PersonTypeView value)
     {
         return (PersonType)value;

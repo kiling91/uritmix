@@ -2,7 +2,6 @@ using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Lesson;
 using Dto.Lesson;
-using Dto.Person;
 using Helpers.Core;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -16,9 +15,9 @@ public class GetLesson
 
     public class Handler : IRequestHandler<Query, ResultResponse<LessonView>>
     {
+        private readonly ILessonRepository _lessonRepository;
         private readonly IStringLocalizer<Handler> _localizer;
         private readonly IMapper _mapper;
-        private readonly ILessonRepository _lessonRepository;
 
         public Handler(IStringLocalizer<Handler> localizer, IMapper mapper, ILessonRepository lessonRepository)
         {
