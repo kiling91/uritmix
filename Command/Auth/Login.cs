@@ -83,7 +83,7 @@ public class Login
             if (hash != person.Auth.Hash)
                 return ResultResponse<LoggedPersonView>.CreateError(_localizer["Credential error"]);
 
-            var token = _refreshTokenRepository.CreateOrUpdate(new RefreshTokenModel
+            var token = await _refreshTokenRepository.CreateOrUpdate(new RefreshTokenModel
             {
                 IsRevoked = false,
                 PersonId = person.Id
