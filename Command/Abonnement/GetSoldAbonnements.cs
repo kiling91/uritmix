@@ -13,7 +13,8 @@ namespace Command.Abonnement;
 public class GetSoldAbonnements
 {
     [DisplayName("GetSoldAbonnementsQuery")]
-    public record Query(long PersonId, Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<SoldAbonnementView>>>;
+    public record Query
+        (long PersonId, Paginator Paginator) : IRequest<ResultResponse<PaginatedListViewModel<SoldAbonnementView>>>;
 
     public class CommandValidator : AbstractValidator<Query>
     {
@@ -28,8 +29,8 @@ public class GetSoldAbonnements
 
     public class Handler : IRequestHandler<Query, ResultResponse<PaginatedListViewModel<SoldAbonnementView>>>
     {
-        private readonly ISoldAbonnementRepository _soldAbonnementRepository;
         private readonly IMapper _mapper;
+        private readonly ISoldAbonnementRepository _soldAbonnementRepository;
 
         public Handler(IMapper mapper, ISoldAbonnementRepository soldAbonnementRepository)
         {

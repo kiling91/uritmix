@@ -24,7 +24,9 @@ public class CreateAbonnement
         public AbonnementValidityView Validity { get; init; }
         public byte NumberOfVisits { get; init; }
         public float BasePrice { get; init; }
+
         public DiscountView Discount { get; init; }
+
         // public byte DaysOfFreezing { get; init; }
         public IEnumerable<long> LessonIds { get; init; } = null!;
     }
@@ -57,7 +59,7 @@ public class CreateAbonnement
                     .NotNull()
                     .GreaterThanOrEqualTo(ModelSettings.AbonnementBasePriceMin)
                     .LessThanOrEqualTo(ModelSettings.AbonnementBasePriceMax);
-                
+
                 RuleFor(x => x.Create.LessonIds)
                     .NotNull();
             });
@@ -87,7 +89,7 @@ public class CreateAbonnement
                 Name = message.Create.Name.FirstLetterToUpper()
             };
 
-            if (!create.LessonIds.Any()) 
+            if (!create.LessonIds.Any())
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement must be assigned lessens"]);
 
             var find = await _abonnementRepository.Find(create.Name);

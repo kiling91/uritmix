@@ -32,6 +32,15 @@ public class AuthController : Controller
     {
         return _mediator.Send(new Login.Command(model), ct);
     }
+    
+    /// <summary>
+    ///     Разлогин пользователя
+    /// </summary>
+    [HttpPost("logout")]
+    public Task<ResultResponse<Unit>> Login([FromBody] Logout.LogoutForm model, CancellationToken ct)
+    {
+        return _mediator.Send(new Logout.Command(model), ct);
+    }
 
     /// <summary>
     ///     Получение нового token с помощью refresh token
@@ -73,7 +82,7 @@ public class AuthController : Controller
     {
         return _mediator.Send(new ActivateAuth.Command(model), ct);
     }
-    
+
     /// <summary>
     ///     Создание аккаунта для пользователя
     /// </summary>

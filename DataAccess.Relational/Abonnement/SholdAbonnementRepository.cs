@@ -3,50 +3,42 @@ using DataAccess.Abonnement;
 using DataAccess.Relational.Abonnement.Entities;
 using Helpers.DataAccess;
 using Helpers.DataAccess.Relational;
-using Helpers.DataAccess.Relational.Extensions;
 using Helpers.Pagination;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Model.Abonnement;
 
 namespace DataAccess.Relational.Abonnement;
 
-public class SoldAbonnementRepository: RepositoryBase<DbServiceContext>, ISoldAbonnementRepository
+public class SoldAbonnementRepository : RepositoryBase<DbServiceContext>, ISoldAbonnementRepository
 {
-    public SoldAbonnementRepository(DbServiceContext context, IMapper mapperObject, ILogger<SoldAbonnementRepository> logger) 
-        : base(context, mapperObject, logger)
+    public SoldAbonnementRepository(DbServiceContext context, IMapper map, ILogger<SoldAbonnementRepository> logger)
+        : base(context, map, logger)
     {
     }
 
     public Task<SoldAbonnementModel> Create(SoldAbonnementModel model)
     {
-        return CreateEntity(model, context => context.SoldAbonnements);
+        return CreateEntity(model, c => c.SoldAbonnements);
     }
 
-    public async Task<UpdatedModel<SoldAbonnementModel>> Update(long id, Func<SoldAbonnementModel, Task<SoldAbonnementModel>> updateFunc)
+    public Task<UpdatedModel<SoldAbonnementModel>> Update(long id,
+        Func<SoldAbonnementModel, Task<SoldAbonnementModel>> updateFunc)
     {
-        return await UpdateEntity(
+        return UpdateEntity(e => e.Id == id, c => c.SoldAbonnements, updateFunc);
+    }
+
+    public Task<SoldAbonnementModel?> Get(long id)
+    {
+        return GetEntity<SoldAbonnementModel, SoldAbonnementEntity>(
             e => e.Id == id,
-            context => context.SoldAbonnements,
-            updateFunc,
-            (_, _) => Task.CompletedTask);
+            c => c.SoldAbonnements);
     }
 
-    public async Task<SoldAbonnementModel?> Get(long id)
+    public Task<PaginatedList<SoldAbonnementModel>> Items(long personId, Paginator paginator)
     {
-        return await GetEntity(
-            e => e.Id == id,
-            Dummy<SoldAbonnementModel>,
-            context => context.SoldAbonnements);
-    }
-
-    public async Task<PaginatedList<SoldAbonnementModel>> Items(long personId, Paginator paginator)
-    {
-        var sessions = Context.SoldAbonnements
+        var query = Context.SoldAbonnements
             .OrderByDescending(p => p.DateSale)
-            .Where(p => p.PersonId == personId)
-            .AsNoTracking();
-        var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);
-        return MapperObject.Map<PaginatedList<SoldAbonnementEntity>, PaginatedList<SoldAbonnementModel>>(page);
+            .Where(p => p.PersonId == personId);
+        return PaginatedEntity<SoldAbonnementModel, SoldAbonnementEntity>(paginator, query);
     }
 }

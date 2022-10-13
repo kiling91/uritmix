@@ -61,7 +61,7 @@ public class AbonnementController : ControllerBase
     {
         return _mediator.Send(new GetAbonnements.Query(query), ct);
     }
-    
+
     /// <summary>
     ///     Продажа абонимента
     /// </summary>
@@ -73,7 +73,7 @@ public class AbonnementController : ControllerBase
     {
         return _mediator.Send(new SaleAbonnement.Command(model), ct);
     }
-    
+
     /// <summary>
     ///     Возвращает список купленных абониментов пользователя
     /// </summary>

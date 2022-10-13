@@ -1,5 +1,6 @@
 using AutoMapper;
 using DataAccess.Auth;
+using DataAccess.Relational.Auth.Entities;
 using Helpers.DataAccess.Relational;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,9 +10,9 @@ namespace DataAccess.Relational.Auth;
 
 public class RefreshTokenRepository : RepositoryBase<DbServiceContext>, IRefreshTokenRepository
 {
-    public RefreshTokenRepository(DbServiceContext context, IMapper mapperObject,
+    public RefreshTokenRepository(DbServiceContext context, IMapper map,
         ILogger<RefreshTokenRepository> logger)
-        : base(context, mapperObject, logger)
+        : base(context, map, logger)
     {
     }
 
@@ -23,11 +24,11 @@ public class RefreshTokenRepository : RepositoryBase<DbServiceContext>, IRefresh
             entity => entity.PersonId == model.PersonId);
     }
 
-    public async Task<RefreshTokenModel?> Get(long id)
+    public Task<RefreshTokenModel?> Get(long id)
     {
-        return await GetEntity(
+        return GetEntity<RefreshTokenModel, RefreshTokenEntity>(
             e => e.Id == id,
-            Dummy<RefreshTokenModel>,
-            context => context.RefreshTokens.Include(r => r.Person));
+            c => c.RefreshTokens
+                .Include(code => code.Person));
     }
 }

@@ -1,6 +1,5 @@
 Add migration
 
-
 ```
 dotnet ef migrations remove
 ```

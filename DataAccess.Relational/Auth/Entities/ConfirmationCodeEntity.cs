@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Helpers.DataAccess.Relational;
-using Model.Auth;
 
 namespace DataAccess.Relational.Auth.Entities;
 

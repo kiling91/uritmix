@@ -9,7 +9,4 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
 
-    <ItemGroup>
-    </ItemGroup>
-
 </Project>

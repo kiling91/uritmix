@@ -1,4 +1,3 @@
-using Command.Auth;
 using Command.Person;
 using Dto.Person;
 using Helpers.Core;

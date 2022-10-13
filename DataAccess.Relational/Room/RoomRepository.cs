@@ -3,9 +3,7 @@ using DataAccess.Relational.Room.Entities;
 using DataAccess.Room;
 using Helpers.DataAccess;
 using Helpers.DataAccess.Relational;
-using Helpers.DataAccess.Relational.Extensions;
 using Helpers.Pagination;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Model.Room;
 
@@ -13,47 +11,35 @@ namespace DataAccess.Relational.Room;
 
 public class RoomRepository : RepositoryBase<DbServiceContext>, IRoomRepository
 {
-    public RoomRepository(DbServiceContext context, IMapper mapperObject, ILogger<RoomRepository> logger)
-        : base(context, mapperObject, logger)
+    public RoomRepository(DbServiceContext context, IMapper map, ILogger<RoomRepository> logger)
+        : base(context, map, logger)
     {
     }
 
     public Task<RoomModel> Create(RoomModel model)
     {
-        return CreateEntity(model, context => context.Rooms);
+        return CreateEntity(model, c => c.Rooms);
     }
 
-    public async Task<UpdatedModel<RoomModel>> Update(long id, Func<RoomModel, Task<RoomModel>> updateFunc)
+    public Task<UpdatedModel<RoomModel>> Update(long id, Func<RoomModel, Task<RoomModel>> updateFunc)
     {
-        return await UpdateEntity(
-            e => e.Id == id,
-            context => context.Rooms,
-            updateFunc,
-            (_, _) => Task.CompletedTask);
+        return UpdateEntity(e => e.Id == id, c => c.Rooms, updateFunc);
     }
 
-    public async Task<RoomModel?> Get(long id)
+    public Task<RoomModel?> Get(long id)
     {
-        return await GetEntity(
-            e => e.Id == id,
-            Dummy<RoomModel>,
-            context => context.Rooms);
+        return GetEntity<RoomModel, RoomEntity>(e => e.Id == id, c => c.Rooms);
     }
 
-    public async Task<RoomModel?> Find(string name)
+    public Task<RoomModel?> Find(string name)
     {
-        return await GetEntity(
-            e => e.Name == name,
-            Dummy<RoomModel>,
-            context => context.Rooms);
+        return GetEntity<RoomModel, RoomEntity>(e => e.Name == name, c => c.Rooms);
     }
 
-    public async Task<PaginatedList<RoomModel>> Items(Paginator paginator)
+    public Task<PaginatedList<RoomModel>> Items(Paginator paginator)
     {
-        var sessions = Context.Rooms
-            .OrderBy(p => p.Name)
-            .AsNoTracking();
-        var page = await sessions.ToPaginatedListWithoutOrderingAsync(paginator);
-        return MapperObject.Map<PaginatedList<RoomEntity>, PaginatedList<RoomModel>>(page);
+        var query = Context.Rooms
+            .OrderBy(p => p.Name);
+        return PaginatedEntity<RoomModel, RoomEntity>(paginator, query);
     }
 }

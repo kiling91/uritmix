@@ -64,7 +64,7 @@ public class PasswordResetQuery
                 PersonId = find.Id,
                 Token = Guid.NewGuid().ToString(),
                 Type = ConfirmTokenType.ResetPassword,
-                DateCreate = DateTime.Now,
+                DateCreate = DateTime.Now
             });
 
             // Отправка кода подтверждения пользователя
