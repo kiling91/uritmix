@@ -60,7 +60,7 @@ public class Logout
             await _refreshTokenRepository.CreateOrUpdate(new RefreshTokenModel
             {
                 PersonId = token.PersonId,
-                IsRevoked = false
+                IsRevoked = true
             });
             
             return new ResultResponse<Unit>(Unit.Value);

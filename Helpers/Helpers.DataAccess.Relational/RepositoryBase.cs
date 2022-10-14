@@ -32,6 +32,21 @@ public class RepositoryBase<TContext> where TContext : DbContext
         return Map.Map<TModel>(entity);
     }
 
+    protected async Task<TModel> CreateEntity<TModel, TEntity>(
+        TModel model,
+        Func<TContext, DbSet<TEntity>> dbSetAccessor,
+        Func<TContext, TEntity, Task> updateRelatedEntitiesTask
+    ) where TEntity : class
+    {
+        var entity = Map.Map<TEntity>(model);
+        // При необходимости - обновляем связанные сущности
+        await updateRelatedEntitiesTask.Invoke(Context, entity);
+        
+        dbSetAccessor(Context).Add(entity);
+        await Context.SaveChangesAsync();
+        return Map.Map<TModel>(entity);
+    }
+
     protected async Task<TModel?> GetEntity<TModel, TEntity>(Expression<Func<TEntity, bool>> entitySelector,
         Func<TContext, IQueryable<TEntity>> dbSetAccessor) where TEntity : class
     {
@@ -61,23 +76,34 @@ public class RepositoryBase<TContext> where TContext : DbContext
         return Map.Map<TModel>(entity);
     }
 
-
-    protected async Task<UpdatedModel<TModel>> UpdateEntity<TModel, TEntity>(
+    protected Task<UpdatedModel<TModel>> UpdateEntity<TModel, TEntity>(
         Expression<Func<TEntity, bool>> entitySelector,
         Func<TContext, IQueryable<TEntity>> dbSetAccessor,
         Func<TModel, Task<TModel>> getUpdatedModelTask
     )
     {
+        return UpdateEntity(entitySelector, dbSetAccessor, getUpdatedModelTask, (_, _, _) => Task.CompletedTask);
+    }
+
+    protected async Task<UpdatedModel<TModel>> UpdateEntity<TModel, TEntity>(
+        Expression<Func<TEntity, bool>> entitySelector,
+        Func<TContext, IQueryable<TEntity>> dbSetAccessor,
+        Func<TModel, Task<TModel>> getUpdatedModelTask,
+        Func<TContext, TEntity, TModel, Task> handleRelatedEntitiesTask
+    )
+    {
         var entity = await dbSetAccessor(Context).FirstOrDefaultAsync(entitySelector);
         if (entity == null)
             throw new EntityDoesNotExistsException<TEntity>();
+
         var oldModel = Map.Map<TModel>(entity);
         var model = Map.Map<TModel>(entity);
 
         model = await getUpdatedModelTask(model);
         Map.Map(model, entity);
-        await Context.SaveChangesAsync();
+        await handleRelatedEntitiesTask(Context, entity, model);
 
+        await Context.SaveChangesAsync();
         return new UpdatedModel<TModel>(Map.Map<TModel>(entity), oldModel);
     }
 
@@ -89,9 +115,9 @@ public class RepositoryBase<TContext> where TContext : DbContext
         if (entity == null)
             throw new EntityDoesNotExistsException<TEntity>();
 
-        var model = Map.Map<TModel>(entity!);
+        var model = Map.Map<TModel>(entity);
 
-        dbSetAccessor(Context).Remove(entity!);
+        dbSetAccessor(Context).Remove(entity);
         await Context.SaveChangesAsync();
 
         return model;

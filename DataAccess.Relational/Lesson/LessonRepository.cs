@@ -19,7 +19,7 @@ public class LessonRepository : RepositoryBase<DbServiceContext>, ILessonReposit
 
     public Task<LessonModel> Create(LessonModel model)
     {
-        return CreateEntity(model, c => c.Persons);
+        return CreateEntity(model, c => c.Lessons);
     }
 
     public Task<UpdatedModel<LessonModel>> Update(long id, Func<LessonModel, Task<LessonModel>> updateFunc)

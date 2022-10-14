@@ -29,6 +29,8 @@ public class RefreshTokenRepository : RepositoryBase<DbServiceContext>, IRefresh
         return GetEntity<RefreshTokenModel, RefreshTokenEntity>(
             e => e.Id == id,
             c => c.RefreshTokens
-                .Include(code => code.Person));
+                .Include(code => code.Person)
+                .ThenInclude(p => p.Auth)
+            );
     }
 }

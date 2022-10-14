@@ -49,10 +49,10 @@ public class EditAbonnement
                     .GreaterThanOrEqualTo(ModelSettings.AbonnementNumberOfVisitsMin)
                     .LessThanOrEqualTo(ModelSettings.AbonnementNumberOfVisitsMax);
 
-                /*RuleFor(x => x.Edit.DaysOfFreezing)
-                    .NotNull()
-                    .GreaterThanOrEqualTo(ModelSettings.AbonnementDaysOfFreezingMin)
-                    .LessThanOrEqualTo(ModelSettings.AbonnementDaysOfFreezingMax);*/
+                //RuleFor(x => x.Edit.DaysOfFreezing)
+                //    .NotNull()
+                //    .GreaterThanOrEqualTo(ModelSettings.AbonnementDaysOfFreezingMin)
+                //    .LessThanOrEqualTo(ModelSettings.AbonnementDaysOfFreezingMax);
 
                 RuleFor(x => x.Edit.BasePrice)
                     .NotNull()
@@ -77,7 +77,6 @@ public class EditAbonnement
             _abonnementRepository = abonnementRepository;
             _lessonRepository = lessonRepository;
         }
-
 
         public async Task<ResultResponse<AbonnementView>> Handle(Command message, CancellationToken ct)
         {

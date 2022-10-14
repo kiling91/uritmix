@@ -20,6 +20,7 @@ public sealed class DbServiceContext : DbContext
     public DbSet<RoomEntity> Rooms => Set<RoomEntity>();
     public DbSet<LessonEntity> Lessons => Set<LessonEntity>();
     public DbSet<AbonnementEntity> Abonnements => Set<AbonnementEntity>();
+    public DbSet<AbonnementsLessonsEntity> AbonnementsLessons => Set<AbonnementsLessonsEntity>();
     public DbSet<SoldAbonnementEntity> SoldAbonnements => Set<SoldAbonnementEntity>();
 
     private void OnModelCreatingAuth(ModelBuilder builder)

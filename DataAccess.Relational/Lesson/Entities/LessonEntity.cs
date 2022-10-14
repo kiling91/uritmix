@@ -21,7 +21,7 @@ public class LessonEntity : IHasId
 
     [Column("base_price")] public float BasePrice { get; set; }
 
-    public IEnumerable<AbonnementEntity> Abonnements { get; set; } = null!;
+    public ICollection<AbonnementEntity> Abonnements { get; set; } = new HashSet<AbonnementEntity>();
     public IEnumerable<SoldAbonnementEntity> SoldAbonnements { get; set; } = null!;
 
     [Key] [Column("id")] public long Id { get; set; }
