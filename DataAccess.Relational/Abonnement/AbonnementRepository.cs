@@ -27,13 +27,6 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
             c => c.Abonnements,
             (context, entity) =>
             {
-                entity.Lessons.Clear();
-                foreach (var lesson in model.Lessons)
-                {
-                    var entityLesson = new LessonEntity { Id = lesson.Id };
-                    entity.Lessons.Add(entityLesson);
-                }
-
                 context.Abonnements.Attach(entity);
                 return Task.CompletedTask;
             });
@@ -49,16 +42,8 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
         
         var result = await UpdateEntity(
             e => e.Id == id,
-            c => c.Abonnements.Include(l => l.Lessons), 
-            updateFunc, (_, entity, model) => {
-                foreach (var lesson in entity.Lessons)
-                {
-                    var find = model.Lessons.First(l => l.Name == lesson.Name);
-                    lesson.Id = find.Id;
-                }
-
-                return Task.CompletedTask;
-            });
+            c => c.Abonnements, 
+            updateFunc);
         
         await transaction.CommitAsync();
         return result;

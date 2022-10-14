@@ -38,6 +38,15 @@ public class LessonRepository : RepositoryBase<DbServiceContext>, ILessonReposit
     {
         return GetEntity<LessonModel, LessonEntity>(e => e.Name == name, c => c.Lessons);
     }
+    
+    public async Task<List<LessonModel>> Find(IEnumerable<long> lessonsId)
+    {
+        var list = await Context.Lessons
+            .Where(e => lessonsId.Contains(e.Id))
+            .AsNoTracking()
+            .ToListAsync();
+        return Map.Map<List<LessonEntity>, List<LessonModel>>(list);
+    }
 
     public Task<PaginatedList<LessonModel>> Items(Paginator paginator)
     {

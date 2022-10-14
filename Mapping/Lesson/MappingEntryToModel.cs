@@ -9,7 +9,7 @@ public class MappingEntryToModel : CustomProfile
     public MappingEntryToModel()
     {
         CreateMap<LessonModel, LessonEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .Ignore(m => m.Abonnements)
             .Ignore(m => m.SoldAbonnements)
             .ReverseMapExtended(this);

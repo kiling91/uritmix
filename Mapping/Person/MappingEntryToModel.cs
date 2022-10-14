@@ -10,7 +10,7 @@ public class MappingEntryToModel : CustomProfile
     public MappingEntryToModel()
     {
         CreateMap<PersonModel, PersonEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .ReverseMapExtended(this);
 
         CreateMap<AuthModel, AuthEntity>()
@@ -22,12 +22,12 @@ public class MappingEntryToModel : CustomProfile
             .Map(m => m.Role, m => (AuthRole)m.Role);
 
         CreateMap<RefreshTokenModel, RefreshTokenEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .Ignore(m => m.Id)
             .ReverseMapExtended(this);
 
         CreateMap<ConfirmationCodeModel, ConfirmationCodeEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .Map(m => m.DateCreate, m => m.DateCreate.ToFileTimeUtc())
             .Map(m => m.Type, m => (byte)m.Type)
             .ReverseMapExtended(this)

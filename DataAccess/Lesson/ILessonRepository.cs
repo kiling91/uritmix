@@ -10,5 +10,6 @@ public interface ILessonRepository
     Task<UpdatedModel<LessonModel>> Update(long id, Func<LessonModel, Task<LessonModel>> updateFunc);
     Task<LessonModel?> Get(long id);
     Task<LessonModel?> Find(string name);
+    Task<List<LessonModel>> Find(IEnumerable<long> lessonsId);
     Task<PaginatedList<LessonModel>> Items(Paginator paginator);
 }

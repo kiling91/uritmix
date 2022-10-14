@@ -9,7 +9,7 @@ public class MappingEntryToModel : CustomProfile
     public MappingEntryToModel()
     {
         CreateMap<AbonnementModel, AbonnementEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .Map(m => m.Validity, m => (byte)m.Validity)
             .Map(m => m.Discount, m => (byte)m.Discount)
             .ReverseMapExtended(this)
@@ -17,7 +17,7 @@ public class MappingEntryToModel : CustomProfile
             .Map(m => m.Discount, m => (Discount)m.Discount);
 
         CreateMap<SoldAbonnementModel, SoldAbonnementEntity>()
-            .IgnoreId()
+            //.IgnoreId()
             .Map(m => m.Validity, m => (byte)m.Validity)
             .Map(m => m.Discount, m => (byte)m.Discount)
             .ReverseMapExtended(this)
