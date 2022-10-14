@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DataAccess.Relational.Lesson.Entities;
+using DataAccess.Relational.Relations;
 using Helpers.DataAccess.Relational;
 
 namespace DataAccess.Relational.Abonnement.Entities;
@@ -19,8 +20,6 @@ public class AbonnementEntity : IHasId
     [Column("discount")] public byte Discount { get; set; }
 
     // [Column("days_of_freezing")] public byte DaysOfFreezing { get; set; }
-
-    public IEnumerable<LessonEntity> Lessons { get; set; } = null!;
-
+    public ICollection<LessonEntity> Lessons { get; set; } = new HashSet<LessonEntity>();
     [Key] [Column("id")] public long Id { get; set; }
 }

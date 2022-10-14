@@ -22,11 +22,12 @@ public class MappingEntryToModel : CustomProfile
             .Map(m => m.Role, m => (AuthRole)m.Role);
 
         CreateMap<RefreshTokenModel, RefreshTokenEntity>()
+            .IgnoreId()
             .Ignore(m => m.Id)
             .ReverseMapExtended(this);
 
         CreateMap<ConfirmationCodeModel, ConfirmationCodeEntity>()
-            .Ignore(m => m.Id)
+            .IgnoreId()
             .Map(m => m.DateCreate, m => m.DateCreate.ToFileTimeUtc())
             .Map(m => m.Type, m => (byte)m.Type)
             .ReverseMapExtended(this)
