@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using AutoMapper;
 using DataAccess.Auth;
 using Dto.Auth;
 using FluentValidation;

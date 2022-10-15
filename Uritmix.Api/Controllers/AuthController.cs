@@ -32,7 +32,7 @@ public class AuthController : Controller
     {
         return _mediator.Send(new Login.Command(model), ct);
     }
-    
+
     /// <summary>
     ///     Разлогин пользователя
     /// </summary>

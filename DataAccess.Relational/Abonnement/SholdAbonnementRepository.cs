@@ -19,12 +19,12 @@ public class SoldAbonnementRepository : RepositoryBase<DbServiceContext>, ISoldA
 
     public Task<SoldAbonnementModel> Create(SoldAbonnementModel model)
     {
-        return CreateEntity(model, c => c.SoldAbonnements, 
+        return CreateEntity(model, c => c.SoldAbonnements,
             (context, entity) =>
-        {
-            context.SoldAbonnements.Attach(entity);
-            return Task.CompletedTask;
-        });
+            {
+                context.SoldAbonnements.Attach(entity);
+                return Task.CompletedTask;
+            });
     }
 
     public Task<UpdatedModel<SoldAbonnementModel>> Update(long id,
@@ -37,13 +37,13 @@ public class SoldAbonnementRepository : RepositoryBase<DbServiceContext>, ISoldA
     {
         return GetEntity<SoldAbonnementModel, SoldAbonnementEntity>(
             e => e.Id == id,
-            c => c.SoldAbonnements.Include(e =>  e.Lessons));
+            c => c.SoldAbonnements.Include(e => e.Lessons));
     }
 
     public Task<PaginatedList<SoldAbonnementModel>> Items(long personId, Paginator paginator)
     {
         var query = Context.SoldAbonnements
-            .Include(e =>  e.Lessons)
+            .Include(e => e.Lessons)
             .OrderByDescending(p => p.DateSale)
             .Where(p => p.PersonId == personId);
         return PaginatedEntity<SoldAbonnementModel, SoldAbonnementEntity>(paginator, query);

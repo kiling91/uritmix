@@ -62,7 +62,7 @@ public class Logout
                 PersonId = token.PersonId,
                 IsRevoked = true
             });
-            
+
             return new ResultResponse<Unit>(Unit.Value);
         }
     }

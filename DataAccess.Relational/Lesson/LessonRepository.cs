@@ -38,7 +38,7 @@ public class LessonRepository : RepositoryBase<DbServiceContext>, ILessonReposit
     {
         return GetEntity<LessonModel, LessonEntity>(e => e.Name == name, c => c.Lessons);
     }
-    
+
     public async Task<List<LessonModel>> Find(IEnumerable<long> lessonsId)
     {
         var list = await Context.Lessons

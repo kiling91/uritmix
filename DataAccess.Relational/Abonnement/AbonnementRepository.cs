@@ -1,16 +1,12 @@
 using AutoMapper;
 using DataAccess.Abonnement;
 using DataAccess.Relational.Abonnement.Entities;
-using DataAccess.Relational.Lesson.Entities;
-using DataAccess.Relational.Relations;
 using Helpers.DataAccess;
-using Helpers.DataAccess.Exceptions;
 using Helpers.DataAccess.Relational;
 using Helpers.Pagination;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Model.Abonnement;
-using Model.Lesson;
 
 namespace DataAccess.Relational.Abonnement;
 
@@ -32,19 +28,20 @@ public class AbonnementRepository : RepositoryBase<DbServiceContext>, IAbonnemen
             });
     }
 
-    public async Task<UpdatedModel<AbonnementModel>> Update(long id, Func<AbonnementModel, Task<AbonnementModel>> updateFunc)
+    public async Task<UpdatedModel<AbonnementModel>> Update(long id,
+        Func<AbonnementModel, Task<AbonnementModel>> updateFunc)
     {
         await using var transaction = await Context.Database.BeginTransactionAsync();
 
         var remove = Context.AbonnementsLessons.Where(d => d.AbonnementId == id);
         Context.RemoveRange(remove);
         await Context.SaveChangesAsync();
-        
+
         var result = await UpdateEntity(
             e => e.Id == id,
-            c => c.Abonnements, 
+            c => c.Abonnements,
             updateFunc);
-        
+
         await transaction.CommitAsync();
         return result;
     }

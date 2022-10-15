@@ -61,7 +61,7 @@ public class AbonnementController : ControllerBase
     {
         return _mediator.Send(new GetAbonnements.Query(query), ct);
     }
-    
+
     /// <summary>
     ///     Возвращает абоннемент по id
     /// </summary>

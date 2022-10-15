@@ -10,7 +10,6 @@ using Mapping.Enum.Abonnement;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Model;
-using Model.Lesson;
 
 namespace Command.Abonnement;
 

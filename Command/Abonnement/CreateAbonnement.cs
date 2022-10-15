@@ -11,7 +11,6 @@ using MediatR;
 using Microsoft.Extensions.Localization;
 using Model;
 using Model.Abonnement;
-using Model.Lesson;
 
 namespace Command.Abonnement;
 
