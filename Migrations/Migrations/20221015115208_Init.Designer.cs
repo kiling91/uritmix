@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Migrations.Migrations
 {
     [DbContext(typeof(DbServiceContext))]
-    [Migration("20221004184627_Init")]
+    [Migration("20221015115208_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,12 +79,12 @@ namespace Migrations.Migrations
                         .HasColumnType("real")
                         .HasColumnName("base_price");
 
-                    b.Property<DateTime>("DateExpiration")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<long>("DateExpiration")
+                        .HasColumnType("bigint")
                         .HasColumnName("date_expiration");
 
-                    b.Property<DateTime>("DateSale")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<long>("DateSale")
+                        .HasColumnType("bigint")
                         .HasColumnName("date_sale");
 
                     b.Property<byte>("Discount")

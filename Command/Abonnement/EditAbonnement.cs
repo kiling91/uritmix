@@ -10,7 +10,6 @@ using Mapping.Enum.Abonnement;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Model;
-using Model.Lesson;
 
 namespace Command.Abonnement;
 
@@ -96,15 +95,9 @@ public class EditAbonnement
                     return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement already exist"]);
             }
 
-            // TODO: передалать в один запрос
-            var lessons = new List<LessonModel>();
-            foreach (var lessonId in edit.LessonIds)
-            {
-                var lesson = await _lessonRepository.Get(lessonId);
-                if (lesson == null)
-                    return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);
-                lessons.Add(lesson);
-            }
+            var lessons = await _lessonRepository.Find(edit.LessonIds.ToArray());
+            if (lessons.Count != edit.LessonIds.Count())
+                return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);
 
             var update = await _abonnementRepository.Update(get.Id,
                 async model =>

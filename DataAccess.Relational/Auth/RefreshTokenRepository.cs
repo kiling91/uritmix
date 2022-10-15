@@ -31,6 +31,6 @@ public class RefreshTokenRepository : RepositoryBase<DbServiceContext>, IRefresh
             c => c.RefreshTokens
                 .Include(code => code.Person)
                 .ThenInclude(p => p.Auth)
-            );
+        );
     }
 }

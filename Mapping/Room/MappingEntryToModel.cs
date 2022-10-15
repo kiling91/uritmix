@@ -9,7 +9,7 @@ public class MappingEntryToModel : CustomProfile
     public MappingEntryToModel()
     {
         CreateMap<RoomModel, RoomEntity>()
-            .IgnoreId()
+            // .IgnoreId()
             .ReverseMapExtended(this);
     }
 }

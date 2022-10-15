@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DataAccess.Relational.Lesson.Entities;
-using DataAccess.Relational.Relations;
 using Helpers.DataAccess.Relational;
 
 namespace DataAccess.Relational.Abonnement.Entities;

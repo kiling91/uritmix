@@ -55,13 +55,12 @@ public class LessonController : ControllerBase
     /// </summary>
     [HttpGet("{lessonId}")]
     [AuthorizeByRole(AuthRole.Admin)]
-    public Task<ResultResponse<LessonView>> GetPerson(
+    public Task<ResultResponse<LessonView>> GetLesson(
         long lessonId,
         CancellationToken ct)
     {
         return _mediator.Send(new GetLesson.Query(lessonId), ct);
     }
-
 
     /// <summary>
     ///     Возвращает список занятий

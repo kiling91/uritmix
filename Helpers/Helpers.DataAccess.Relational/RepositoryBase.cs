@@ -41,7 +41,7 @@ public class RepositoryBase<TContext> where TContext : DbContext
         var entity = Map.Map<TEntity>(model);
         // При необходимости - обновляем связанные сущности
         await updateRelatedEntitiesTask.Invoke(Context, entity);
-        
+
         dbSetAccessor(Context).Add(entity);
         await Context.SaveChangesAsync();
         return Map.Map<TModel>(entity);

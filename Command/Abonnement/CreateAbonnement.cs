@@ -11,7 +11,6 @@ using MediatR;
 using Microsoft.Extensions.Localization;
 using Model;
 using Model.Abonnement;
-using Model.Lesson;
 
 namespace Command.Abonnement;
 
@@ -96,19 +95,9 @@ public class CreateAbonnement
             if (find != null)
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement already exist"]);
 
-            // TODO: передалать в один запрос
-            var lessons = new List<LessonModel>();
-            foreach (var lessonId in create.LessonIds)
-            {
-                var lesson = await _lessonRepository.Get(lessonId);
-                if (lesson == null)
-                    return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);
-                lesson = lesson with
-                {
-                    Trainer = null
-                };
-                lessons.Add(lesson);
-            }
+            var lessons = await _lessonRepository.Find(create.LessonIds.ToArray());
+            if (lessons.Count != create.LessonIds.Count())
+                return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);
 
             var result = await _abonnementRepository.Create(new AbonnementModel
             {
