@@ -15,9 +15,9 @@ public class SoldAbonnementEntity : IHasId
 
     [Column("active")] public bool Active { get; set; }
 
-    [Column("date_sale")] public DateTime DateSale { get; set; }
+    [Column("date_sale")] public long DateSale { get; set; }
 
-    [Column("date_expiration")] public DateTime DateExpiration { get; set; }
+    [Column("date_expiration")] public long DateExpiration { get; set; }
 
     [Column("price_sold")] public float PriceSold { get; set; }
 

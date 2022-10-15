@@ -77,12 +77,12 @@ namespace Migrations.Migrations
                         .HasColumnType("real")
                         .HasColumnName("base_price");
 
-                    b.Property<DateTime>("DateExpiration")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<long>("DateExpiration")
+                        .HasColumnType("bigint")
                         .HasColumnName("date_expiration");
 
-                    b.Property<DateTime>("DateSale")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<long>("DateSale")
+                        .HasColumnType("bigint")
                         .HasColumnName("date_sale");
 
                     b.Property<byte>("Discount")

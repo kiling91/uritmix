@@ -61,6 +61,18 @@ public class AbonnementController : ControllerBase
     {
         return _mediator.Send(new GetAbonnements.Query(query), ct);
     }
+    
+    /// <summary>
+    ///     Возвращает абоннемент по id
+    /// </summary>
+    [HttpGet("{abonnementId}")]
+    [AuthorizeByRole(AuthRole.Admin)]
+    public Task<ResultResponse<AbonnementView>> GetAbonnement(
+        long abonnementId,
+        CancellationToken ct)
+    {
+        return _mediator.Send(new GetAbonnement.Query(abonnementId), ct);
+    }
 
     /// <summary>
     ///     Продажа абонимента

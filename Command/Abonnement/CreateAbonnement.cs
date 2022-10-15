@@ -96,7 +96,6 @@ public class CreateAbonnement
             if (find != null)
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Abonnement already exist"]);
 
-            // TODO: передалать в один запрос
             var lessons = await _lessonRepository.Find(create.LessonIds.ToArray());
             if (lessons.Count != create.LessonIds.Count())
                 return ResultResponse<AbonnementView>.CreateError(_localizer["Lesson not found"]);

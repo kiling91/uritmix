@@ -18,9 +18,13 @@ public class MappingEntryToModel : CustomProfile
 
         CreateMap<SoldAbonnementModel, SoldAbonnementEntity>()
             //.IgnoreId()
+            .Map(m => m.DateSale, m => m.DateSale.ToFileTimeUtc())
+            .Map(m => m.DateExpiration, m => m.DateExpiration.ToFileTimeUtc())
             .Map(m => m.Validity, m => (byte)m.Validity)
             .Map(m => m.Discount, m => (byte)m.Discount)
             .ReverseMapExtended(this)
+            .Map(m => m.DateSale, m => DateTime.FromFileTimeUtc(m.DateSale))
+            .Map(m => m.DateExpiration, m => DateTime.FromFileTimeUtc(m.DateExpiration))
             .Map(m => m.Validity, m => (AbonnementValidity)m.Validity)
             .Map(m => m.Discount, m => (Discount)m.Discount);
     }
