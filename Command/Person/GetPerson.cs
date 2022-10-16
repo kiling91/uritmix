@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Auth;
-using Dto.Person;
+using View.Person;
 using Helpers.Core;
 using MediatR;
 using Microsoft.Extensions.Localization;

@@ -1,4 +1,4 @@
-namespace Dto.Auth;
+namespace View.Auth;
 
 public enum AuthStatusView
 {

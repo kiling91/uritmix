@@ -1,4 +1,4 @@
-using Dto.Lesson;
+using View.Lesson;
 using Helpers.Mapping;
 using Model.Lesson;
 

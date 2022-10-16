@@ -2,7 +2,7 @@ using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Abonnement;
 using DataAccess.Auth;
-using Dto.Abonnement;
+using View.Abonnement;
 using FluentValidation;
 using Helpers.Core;
 using Mapping.Enum.Abonnement;
@@ -65,7 +65,7 @@ public class SaleAbonnement
             if (abonnement == null)
                 return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Abonnement not found"]);
 
-            if (create.Discount > abonnement.Discount.ToView())
+            if (create.Discount > abonnement.MaxDiscount.ToView())
                 return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Discount greater than max discount"]);
 
             var person = await _personRepository.Get(message.Create.PersonId);
@@ -86,9 +86,9 @@ public class SaleAbonnement
                 VisitCounter = 0,
                 Name = abonnement.Name,
                 Validity = abonnement.Validity,
-                NumberOfVisits = abonnement.NumberOfVisits,
+                MaxNumberOfVisits = abonnement.MaxNumberOfVisits,
                 BasePrice = abonnement.BasePrice,
-                Discount = abonnement.Discount,
+                Discount = abonnement.MaxDiscount,
                 Lessons = abonnement.Lessons
             });
 

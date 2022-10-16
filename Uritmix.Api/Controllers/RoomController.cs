@@ -1,11 +1,11 @@
 using Command.Room;
-using Dto.Room;
 using Helpers.Core;
 using Helpers.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Model.Auth;
 using Service.Security.UserAccessor;
+using View.Room;
 
 namespace Uritmix.Api.Controllers;
 

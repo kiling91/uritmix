@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Room;
-using Dto.Room;
+using View.Room;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Pagination;

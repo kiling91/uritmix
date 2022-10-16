@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Auth;
-using Dto.Person;
+using View.Person;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Core.Extensions;

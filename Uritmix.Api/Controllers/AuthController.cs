@@ -1,11 +1,11 @@
 using Command.Auth;
-using Dto.Auth;
 using Helpers.Core;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Auth;
 using Service.Security.UserAccessor;
+using View.Auth;
 
 namespace Uritmix.Api.Controllers;
 

@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Dto\Dto.csproj"/>
-        <ProjectReference Include="..\Model\Model.csproj"/>
+        <ProjectReference Include="..\View\View.csproj" />
+        <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
 </Project>

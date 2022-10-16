@@ -2,7 +2,7 @@ using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Abonnement;
 using DataAccess.Lesson;
-using Dto.Abonnement;
+using View.Abonnement;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Core.Extensions;
@@ -20,12 +20,9 @@ public class EditAbonnement
     {
         public string Name { get; init; } = null!;
         public AbonnementValidityView Validity { get; init; }
-        public byte NumberOfVisits { get; init; }
+        public byte MaxNumberOfVisits { get; init; }
         public float BasePrice { get; init; }
-
-        public DiscountView Discount { get; init; }
-
-        // public byte DaysOfFreezing { get; init; }
+        public DiscountView MaxDiscount { get; init; }
         public IEnumerable<long> LessonIds { get; init; } = null!;
     }
 
@@ -43,7 +40,7 @@ public class EditAbonnement
                     .NotEmpty()
                     .Length(ModelSettings.RoomNameMinLength, ModelSettings.RoomNameMaxLength);
 
-                RuleFor(x => x.Edit.NumberOfVisits)
+                RuleFor(x => x.Edit.MaxNumberOfVisits)
                     .NotNull()
                     .GreaterThanOrEqualTo(ModelSettings.AbonnementNumberOfVisitsMin)
                     .LessThanOrEqualTo(ModelSettings.AbonnementNumberOfVisitsMax);
@@ -106,9 +103,9 @@ public class EditAbonnement
                     {
                         Name = edit.Name,
                         Validity = edit.Validity.ToModel(),
-                        NumberOfVisits = edit.NumberOfVisits,
+                        MaxNumberOfVisits = edit.MaxNumberOfVisits,
                         BasePrice = edit.BasePrice,
-                        Discount = edit.Discount.ToModel(),
+                        MaxDiscount = edit.MaxDiscount.ToModel(),
                         // DaysOfFreezing = edit.DaysOfFreezing,
                         Lessons = lessons
                     };

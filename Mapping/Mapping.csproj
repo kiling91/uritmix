@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DataAccess.Relational\DataAccess.Relational.csproj"/>
-        <ProjectReference Include="..\Dto\Dto.csproj"/>
-        <ProjectReference Include="..\Helpers\Helpers.Mapping\Helpers.Mapping.csproj"/>
-        <ProjectReference Include="..\Mapping.Enum\Mapping.Enum.csproj"/>
-        <ProjectReference Include="..\Model\Model.csproj"/>
+        <ProjectReference Include="..\DataAccess.Relational\DataAccess.Relational.csproj" />
+        <ProjectReference Include="..\View\View.csproj" />
+        <ProjectReference Include="..\Helpers\Helpers.Mapping\Helpers.Mapping.csproj" />
+        <ProjectReference Include="..\Mapping.Enum\Mapping.Enum.csproj" />
+        <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
 </Project>

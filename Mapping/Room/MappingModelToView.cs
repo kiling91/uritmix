@@ -1,4 +1,4 @@
-using Dto.Room;
+using View.Room;
 using Helpers.Mapping;
 using Model.Room;
 

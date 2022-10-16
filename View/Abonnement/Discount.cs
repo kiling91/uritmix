@@ -1,4 +1,4 @@
-namespace Dto.Abonnement;
+namespace View.Abonnement;
 
 public enum DiscountView
 {

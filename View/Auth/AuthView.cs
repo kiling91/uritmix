@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Dto.Auth;
+namespace View.Auth;
 
 [DisplayName("Auth")]
 public record AuthView

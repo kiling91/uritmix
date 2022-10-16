@@ -1,11 +1,11 @@
 using Command.Lesson;
-using Dto.Lesson;
 using Helpers.Core;
 using Helpers.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Model.Auth;
 using Service.Security.UserAccessor;
+using View.Lesson;
 
 namespace Uritmix.Api.Controllers;
 

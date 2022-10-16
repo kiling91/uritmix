@@ -1,7 +1,7 @@
 using System.ComponentModel;
-using Dto.Auth;
+using View.Auth;
 
-namespace Dto.Person;
+namespace View.Person;
 
 [DisplayName("Person")]
 public record PersonView

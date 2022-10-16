@@ -1,7 +1,7 @@
 using System.ComponentModel;
-using Dto.Person;
+using View.Person;
 
-namespace Dto.Lesson;
+namespace View.Lesson;
 
 [DisplayName("Lesson")]
 public record LessonView

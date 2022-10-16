@@ -1,4 +1,4 @@
-namespace Dto.Person;
+namespace View.Person;
 
 public enum PersonTypeView
 {

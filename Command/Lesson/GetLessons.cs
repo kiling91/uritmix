@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Lesson;
-using Dto.Lesson;
+using View.Lesson;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Pagination;

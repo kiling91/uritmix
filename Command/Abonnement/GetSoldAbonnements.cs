@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Abonnement;
-using Dto.Abonnement;
+using View.Abonnement;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Pagination;

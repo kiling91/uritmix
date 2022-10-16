@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Dto.Room;
+namespace View.Room;
 
 [DisplayName("Room")]
 public record RoomView

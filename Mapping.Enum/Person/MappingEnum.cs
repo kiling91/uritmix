@@ -1,5 +1,5 @@
-using Dto.Auth;
-using Dto.Person;
+using View.Auth;
+using View.Person;
 using Model.Auth;
 using Model.Person;
 

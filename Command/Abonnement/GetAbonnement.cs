@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using AutoMapper;
 using DataAccess.Abonnement;
-using Dto.Abonnement;
+using View.Abonnement;
 using Helpers.Core;
 using MediatR;
 using Microsoft.Extensions.Localization;

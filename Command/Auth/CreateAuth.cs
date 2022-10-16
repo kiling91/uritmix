@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using DataAccess.Auth;
-using Dto.Auth;
+using View.Auth;
 using FluentValidation;
 using Helpers.Core;
 using Helpers.Core.Extensions;
