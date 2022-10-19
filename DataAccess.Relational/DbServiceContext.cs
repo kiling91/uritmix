@@ -1,5 +1,6 @@
 using DataAccess.Relational.Abonnement.Entities;
 using DataAccess.Relational.Auth.Entities;
+using DataAccess.Relational.Event.Entities;
 using DataAccess.Relational.Lesson.Entities;
 using DataAccess.Relational.Relations;
 using DataAccess.Relational.Room.Entities;
@@ -22,6 +23,7 @@ public sealed class DbServiceContext : DbContext
     public DbSet<AbonnementEntity> Abonnements => Set<AbonnementEntity>();
     public DbSet<AbonnementsLessonsEntity> AbonnementsLessons => Set<AbonnementsLessonsEntity>();
     public DbSet<SoldAbonnementEntity> SoldAbonnements => Set<SoldAbonnementEntity>();
+    public DbSet<EventEntry> Events => Set<EventEntry>();
 
     private void OnModelCreatingAuth(ModelBuilder builder)
     {
@@ -68,6 +70,11 @@ public sealed class DbServiceContext : DbContext
         builder.Entity<LessonEntity>()
             .HasIndex(u => u.Name)
             .IsUnique();
+        
+        builder.Entity<LessonEntity>()
+            .HasOne(pt => pt.Trainer)
+            .WithMany()
+            .HasForeignKey(pt => pt.TrainerId);
     }
 
     private void OnModelCreatingAbonnement(ModelBuilder builder)
@@ -102,6 +109,19 @@ public sealed class DbServiceContext : DbContext
                     .WithMany()
                     .HasForeignKey(pt => pt.SoldAbonnementId));
     }
+    
+    private void OnModelCreatingEvent(ModelBuilder builder)
+    {
+        builder.Entity<EventEntry>()
+            .HasOne(pt => pt.Lesson)
+            .WithMany()
+            .HasForeignKey(pt => pt.LessonId);
+        
+        builder.Entity<EventEntry>()
+            .HasOne(pt => pt.Room)
+            .WithMany()
+            .HasForeignKey(pt => pt.RoomId);
+    }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -109,5 +129,6 @@ public sealed class DbServiceContext : DbContext
         OnModelCreatingRoom(builder);
         OnModelCreatingLesson(builder);
         OnModelCreatingAbonnement(builder);
+        OnModelCreatingEvent(builder);
     }
 }

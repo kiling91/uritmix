@@ -49,7 +49,9 @@ services.AddAutoMapper(new List<Profile>
     new Mapping.Lesson.MappingModelToView(),
     new Mapping.Lesson.MappingEntryToModel(),
     new Mapping.Abonnement.MappingModelToView(),
-    new Mapping.Abonnement.MappingEntryToModel()
+    new Mapping.Abonnement.MappingEntryToModel(),
+    new Mapping.Event.MappingModelToView(),
+    new Mapping.Event.MappingEntryToModel(),
 });
 
 // Configure db context

@@ -49,6 +49,18 @@ public class RoomController : ControllerBase
     {
         return _mediator.Send(new EditRoom.Command(roomId, model), ct);
     }
+    
+    /// <summary>
+    ///     Возвращает помещение по id
+    /// </summary>
+    [HttpGet("{roomId}")]
+    [AuthorizeByRole(AuthRole.Manager, AuthRole.Admin)]
+    public Task<ResultResponse<RoomView>> GetRoom(
+        long roomId,
+        CancellationToken ct)
+    {
+        return _mediator.Send(new GetRoom.Query(roomId), ct);
+    }
 
     /// <summary>
     ///     Возвращает список помещений
