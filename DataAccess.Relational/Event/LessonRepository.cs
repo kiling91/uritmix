@@ -36,6 +36,13 @@ public class EventRepository : RepositoryBase<DbServiceContext>, IEventRepositor
                 .Include(l => l.Room)
             );
     }
+    
+    public async Task Remove(long id)
+    {
+        await RemoveEntity<EventModel, EventEntry>(
+            e => e.Id == id,
+            context => context.Events);
+    }
 
     public async Task<IEnumerable<EventModel>> Items(DateTime startDate, DateTime endDate)
     {

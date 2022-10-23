@@ -44,12 +44,24 @@ public class EventController : ControllerBase
     /// </summary>
     [HttpPut("{eventId}")]
     [AuthorizeByRole(AuthRole.Admin)]
-    public Task<ResultResponse<EventView>> EditRoom(
+    public Task<ResultResponse<EventView>> EditEvent(
         long eventId,
         [FromBody] EditEvent.EditEventForm model,
         CancellationToken ct)
     {
         return _mediator.Send(new EditEvent.Command(eventId, model), ct);
+    }
+    
+    /// <summary>
+    ///     Обновляет событие
+    /// </summary>
+    [HttpDelete("{eventId}")]
+    [AuthorizeByRole(AuthRole.Admin)]
+    public Task<ResultResponse<Unit>> EditRoom(
+        long eventId,
+        CancellationToken ct)
+    {
+        return _mediator.Send(new DeleteEvent.Command(eventId), ct);
     }
     
     /// <summary>

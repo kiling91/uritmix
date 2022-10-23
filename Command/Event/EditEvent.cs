@@ -60,6 +60,16 @@ public class EditEvent
         {
             var edit = message.Edit;
 
+            var get = await _eventRepository.Get(message.EventId);
+            if (get == null)
+                return ResultResponse<EventView>.CreateError(_localizer["Event not found"]);
+            
+            if (get.Type == EventType.InProgress)
+                return ResultResponse<EventView>.CreateError(_localizer["Event in progress"]);
+            
+            if (get.Type == EventType.Finished)
+                return ResultResponse<EventView>.CreateError(_localizer["Event is finished"]);
+            
             var t1 = edit.StartDate.ToUniversalTime();
             var t2 = DateTime.Now.ToUniversalTime();
             if (t1 < t2)
@@ -73,9 +83,7 @@ public class EditEvent
             if (room == null)
                 return ResultResponse<EventView>.CreateError(_localizer["Room not found"]);
             
-            var get = await _eventRepository.Get(message.EventId);
-            if (get == null)
-                return ResultResponse<EventView>.CreateError(_localizer["Event not found"]);
+
             
             // TODO: Проверка пересечений занятий в одной комнате
             
