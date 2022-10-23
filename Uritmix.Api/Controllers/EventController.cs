@@ -40,14 +40,28 @@ public class EventController : ControllerBase
     }
     
     /// <summary>
+    ///     Обновляет событие
+    /// </summary>
+    [HttpPut("{eventId}")]
+    [AuthorizeByRole(AuthRole.Admin)]
+    public Task<ResultResponse<EventView>> EditRoom(
+        long eventId,
+        [FromBody] EditEvent.EditEventForm model,
+        CancellationToken ct)
+    {
+        return _mediator.Send(new EditEvent.Command(eventId, model), ct);
+    }
+    
+    /// <summary>
     ///     Возвращает список событий
     /// </summary>
     [HttpGet]
     [AuthorizeByRole(AuthRole.Manager, AuthRole.Admin)]
-    public Task<ResultResponse<PaginatedListViewModel<EventView>>> GetEvents(
-        [FromQuery] string filterExpression,
+    public Task<ResultResponse<IEnumerable<EventView>>> GetEvents(
+        [FromQuery] DateTime startDate,
+        [FromQuery] DateTime endDate,
         CancellationToken ct)
     {
-        return _mediator.Send(new GetEvents.Query(filterExpression), ct);
+        return _mediator.Send(new GetEvents.Query(startDate, endDate), ct);
     }
 }

@@ -38,6 +38,12 @@ public static class SwaggerExtensions
                 return "ResultPaginated" + GetDisplayName(type);
             }
 
+            if (type.Name == typeof(IEnumerable<>).Name)
+            {
+                type = type.GetGenericArguments()[0];
+                return "ResultList" + GetDisplayName(type);
+            }
+            
             return "Result" + GetDisplayName(type);
         }
 
@@ -46,7 +52,13 @@ public static class SwaggerExtensions
             var type = t.GetGenericArguments()[0];
             return "Paginated" + GetDisplayName(type);
         }
-
+        
+        if (t.Name == typeof(IEnumerable<>).Name)
+        {
+            var type = t.GetGenericArguments()[0];
+            return "List" + GetDisplayName(type);
+        }
+        
         return GetDisplayName(t);
     }
 

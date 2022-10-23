@@ -8,32 +8,30 @@ using Helpers.Core;
 using Helpers.Core.Extensions;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using Model;
 using Model.Event;
-using Model.Room;
 using View.Event;
-using View.Room;
+using View.Lesson;
 
 namespace Command.Event;
 
-public class CreateEvent
+public class EditEvent
 {
-    [DisplayName("CreateEvent")]
-    public record CreateEventForm
+    [DisplayName("EditEvent")]
+    public record EditEventForm
     {
         public long LessonId { get; init; }
         public long RoomId { get; init; }
         public DateTime StartDate { get; init; }
     }
 
-    [DisplayName("CreateEventCommand")]
-    public record Command(CreateEventForm Create) : IRequest<ResultResponse<EventView>>;
+    [DisplayName("EditEventCommand")]
+    public record Command(long EventId, EditEventForm Edit) : IRequest<ResultResponse<EventView>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.Create).NotNull().DependentRules(() =>
+            RuleFor(x => x.Edit).NotNull().DependentRules(() =>
             {
             });
         }
@@ -60,32 +58,41 @@ public class CreateEvent
 
         public async Task<ResultResponse<EventView>> Handle(Command message, CancellationToken ct)
         {
-            var create = message.Create;
+            var edit = message.Edit;
 
-            var t1 = create.StartDate.ToUniversalTime();
+            var t1 = edit.StartDate.ToUniversalTime();
             var t2 = DateTime.Now.ToUniversalTime();
             if (t1 < t2)
                 return ResultResponse<EventView>.CreateError(_localizer["Start of lesson in the past"]);
 
-            var lesson = await _lessonRepository.Get(create.LessonId);
+            var lesson = await _lessonRepository.Get(edit.LessonId);
             if (lesson == null)
                 return ResultResponse<EventView>.CreateError(_localizer["Lesson not found"]);
 
-            var room = await _roomRepository.Get(create.RoomId);
+            var room = await _roomRepository.Get(edit.RoomId);
             if (room == null)
                 return ResultResponse<EventView>.CreateError(_localizer["Room not found"]);
-
+            
+            var get = await _eventRepository.Get(message.EventId);
+            if (get == null)
+                return ResultResponse<EventView>.CreateError(_localizer["Event not found"]);
+            
             // TODO: Проверка пересечений занятий в одной комнате
             
-            var result = await _eventRepository.Create(new EventModel
-            {
-                LessonId = create.LessonId,
-                RoomId = create.RoomId,
-                StartDate = create.StartDate,
-                EndDate = create.StartDate.AddMinutes(lesson.DurationMinute)
-            });
+            var update = await _eventRepository.Update(get.Id,
+                async model =>
+                {
+                    var update = model with
+                    {
+                        LessonId = edit.LessonId,
+                        RoomId = edit.RoomId,
+                        StartDate = edit.StartDate,
+                        EndDate = edit.StartDate.AddMinutes(lesson.DurationMinute)
+                    };
+                    return await update.AsTaskResult();
+                });
 
-            return new ResultResponse<EventView>(_mapper.Map<EventView>(result));
+            return new ResultResponse<EventView>(_mapper.Map<EventView>(update.New));
         }
     }
 }
