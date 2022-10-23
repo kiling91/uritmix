@@ -23,14 +23,14 @@ public class ConfirmationCoderRepository : RepositoryBase<DbServiceContext>, ICo
 
     public async Task Remove(string token)
     {
-        await DeleteEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
+        await RemoveEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
             e => e.Token == token,
             context => context.ConfirmationCodes);
     }
 
     public async Task Remove(long personId, ConfirmTokenType type)
     {
-        await DeleteEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
+        await RemoveEntity<ConfirmationCodeModel, ConfirmationCodeEntity>(
             e => e.PersonId == personId && e.Type == (byte)type,
             context => context.ConfirmationCodes);
     }

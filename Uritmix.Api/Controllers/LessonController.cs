@@ -54,7 +54,7 @@ public class LessonController : ControllerBase
     ///     Возвращает занятие по id
     /// </summary>
     [HttpGet("{lessonId}")]
-    [AuthorizeByRole(AuthRole.Admin)]
+    [AuthorizeByRole(AuthRole.Manager, AuthRole.Admin)]
     public Task<ResultResponse<LessonView>> GetLesson(
         long lessonId,
         CancellationToken ct)

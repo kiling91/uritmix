@@ -57,6 +57,26 @@ public class SaleAbonnement
             _soldAbonnementRepository = soldAbonnementRepository;
         }
 
+        DateTime ToDateDateExpiration(AbonnementValidity validity)
+        {
+            var dateExpiration = DateTime.Now;
+            switch (validity)
+            {
+                case AbonnementValidity.OneDay:
+                    return dateExpiration.AddDays(1);
+                case AbonnementValidity.OneMonth:
+                    return dateExpiration.AddMonths(1);
+                case AbonnementValidity.ThreeMonths:
+                    return dateExpiration.AddMonths(3);
+                case AbonnementValidity.HalfYear:
+                    return dateExpiration.AddMonths(6);
+                case AbonnementValidity.Year:
+                    return dateExpiration.AddYears(1);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(validity), validity, null);
+            }
+        }
+        
         public async Task<ResultResponse<SoldAbonnementView>> Handle(Command message, CancellationToken ct)
         {
             var create = message.Create;
@@ -73,7 +93,7 @@ public class SaleAbonnement
                 return ResultResponse<SoldAbonnementView>.CreateError(_localizer["Person not found"]);
 
             var dateSale = DateTime.Now;
-            var dateExpiration = DateTime.Now;
+            var dateExpiration = ToDateDateExpiration(abonnement.Validity);
             var priceSold = abonnement.BasePrice * (1.0f - GetDiscountValue(create.Discount));
 
             var result = await _soldAbonnementRepository.Create(new SoldAbonnementModel

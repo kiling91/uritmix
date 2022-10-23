@@ -107,7 +107,7 @@ public class RepositoryBase<TContext> where TContext : DbContext
         return new UpdatedModel<TModel>(Map.Map<TModel>(entity), oldModel);
     }
 
-    protected async Task<TModel> DeleteEntity<TModel, TEntity>(
+    protected async Task<TModel> RemoveEntity<TModel, TEntity>(
         Expression<Func<TEntity, bool>> entitySelector,
         Func<TContext, DbSet<TEntity>> dbSetAccessor) where TEntity : class
     {
