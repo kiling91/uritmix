@@ -50,7 +50,7 @@ public class CreateLesson
                 RuleFor(x => x.Create.BasePrice)
                     .NotNull()
                     .GreaterThanOrEqualTo(ModelSettings.LessonBasePriceMin)
-                    .LessThanOrEqualTo(ModelSettings.LessonDBasePriceMax);
+                    .LessThanOrEqualTo(ModelSettings.LessonBasePriceMax);
             });
         }
     }

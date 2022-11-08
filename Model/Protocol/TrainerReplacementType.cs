@@ -1,4 +1,4 @@
-namespace Model.LessonProtocol;
+namespace Model.Protocol;
 
 public enum TrainerReplacementType
 {

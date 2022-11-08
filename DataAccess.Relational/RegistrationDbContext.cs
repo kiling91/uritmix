@@ -2,10 +2,12 @@ using DataAccess.Abonnement;
 using DataAccess.Auth;
 using DataAccess.Event;
 using DataAccess.Lesson;
+using DataAccess.Protocol;
 using DataAccess.Relational.Abonnement;
 using DataAccess.Relational.Auth;
 using DataAccess.Relational.Event;
 using DataAccess.Relational.Lesson;
+using DataAccess.Relational.Protocol;
 using DataAccess.Relational.Room;
 using DataAccess.Room;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,7 @@ public static class RegistrationDbContextExtension
         services.AddScoped<IAbonnementRepository, AbonnementRepository>();
         services.AddScoped<ISoldAbonnementRepository, SoldAbonnementRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IProtocolRepository, ProtocolRepository>();
         services.AddDbContext<DbServiceContext>(options => { options.UseNpgsql(dbConnectionString); });
     }
 }

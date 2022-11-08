@@ -2,9 +2,11 @@ using DataAccess.Relational.Abonnement.Entities;
 using DataAccess.Relational.Auth.Entities;
 using DataAccess.Relational.Event.Entities;
 using DataAccess.Relational.Lesson.Entities;
+using DataAccess.Relational.Protocol.Entities;
 using DataAccess.Relational.Relations;
 using DataAccess.Relational.Room.Entities;
 using Microsoft.EntityFrameworkCore;
+using Model.Protocol;
 
 namespace DataAccess.Relational;
 
@@ -123,6 +125,21 @@ public sealed class DbServiceContext : DbContext
             .HasForeignKey(pt => pt.RoomId);
     }
 
+    private void OnModelCreatingProtocol(ModelBuilder builder)
+    {
+        builder.Entity<ProtocolEntry>()
+            .HasMany(b => b.Clients)
+            .WithMany(b => b.Protocols)
+            .UsingEntity<ProtocolClient>(
+                j => j
+                    .HasOne<PersonEntity>()
+                    .WithMany()
+                    .HasForeignKey(pt => pt.PersonId),
+                j => j
+                    .HasOne<ProtocolEntry>()
+                    .WithMany()
+                    .HasForeignKey(pt => pt.ProtocolId));
+    }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         OnModelCreatingAuth(builder);
@@ -130,5 +147,6 @@ public sealed class DbServiceContext : DbContext
         OnModelCreatingLesson(builder);
         OnModelCreatingAbonnement(builder);
         OnModelCreatingEvent(builder);
+        OnModelCreatingProtocol(builder);
     }
 }

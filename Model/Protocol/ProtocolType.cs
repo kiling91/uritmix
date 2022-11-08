@@ -1,9 +1,8 @@
-namespace Model.LessonProtocol;
+namespace Model.Protocol;
 
 public enum ProtocolType
 {
     IsClosed,
-    CreatedServer,
     NeedCompletion,
     IsComplete
 }

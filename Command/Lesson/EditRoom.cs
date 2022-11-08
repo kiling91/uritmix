@@ -49,7 +49,7 @@ public class EditLesson
                 RuleFor(x => x.Edit.BasePrice)
                     .NotNull()
                     .GreaterThanOrEqualTo(ModelSettings.LessonBasePriceMin)
-                    .LessThanOrEqualTo(ModelSettings.LessonDBasePriceMax);
+                    .LessThanOrEqualTo(ModelSettings.LessonBasePriceMax);
             });
         }
     }

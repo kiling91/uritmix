@@ -17,7 +17,6 @@ public class ConsumeScopedServiceHostedService : BackgroundService
         _logger = logger;
     }
 
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await DoWork(stoppingToken);

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Relational.Protocol.Entities;
 using Helpers.DataAccess.Relational;
 
 namespace DataAccess.Relational.Auth.Entities;
@@ -20,4 +21,7 @@ public class PersonEntity : IHasId
     public AuthEntity? Auth { get; set; }
 
     [Key] [Column("id")] public long Id { get; set; }
+    
+    public IEnumerable<ProtocolEntry> Protocols { get; init; } = null!;
+
 }
